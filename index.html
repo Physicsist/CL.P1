@@ -1,0 +1,2397 @@
+Dưới đây là toàn bộ mã nguồn hoàn chỉnh của ứng dụng web [P1] (P1 — Before Class
+& Welcoming Students), được đóng gói trong 1 file HTML duy nhất.
+
+Tóm tắt dữ liệu đã trích xuất (100% chính xác từ tài liệu P1)
+
+Ứng dụng chứa đầy đủ 222/222 mẫu câu kèm phiên âm IPA (US), nghĩa tiếng Việt,
+Unit và nhóm tình huống (Section) bám sát hoàn toàn 31 trang tài liệu:
+
+  - Unit 1 — Welcoming Students: 40 mẫu câu (Mục A–F)
+  - Unit 2 — Greeting Students Individually: 56 mẫu câu (Mục 1–8)
+  - Unit 3 — Getting Students Ready: 58 mẫu câu (Mục 1–7)
+  - Unit 4 — Daily Classroom Routine: 68 mẫu câu (Mục 1–7, bao gồm lưu ý cho
+    nhóm Follow-up)
+  - Tổng cộng: 222 mẫu câu.
+
+Cách sử dụng
+
+Bạn chỉ cần sao chép toàn bộ đoạn mã dưới đây, lưu thành file index.html và mở
+trực tiếp bằng trình duyệt (Chrome/Edge được khuyến nghị để dùng tốt nhất tính
+năng nhận diện giọng nói SpeechRecognition) hoặc tải thẳng lên GitHub Pages.
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P1 — Before Class &amp; Welcoming Students | USPEAK Interactive</title>
+  <style>
+    :root {
+      --navy-950: #0f172a;
+      --navy-900: #1e293b;
+      --navy-800: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --emerald-50: #ecfdf5;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --rose-50: #fff1f2;
+      --amber-600: #d97706;
+      --amber-100: #fef3c7;
+      --amber-50: #fffbeb;
+      --indigo-600: #4f46e5;
+      --indigo-50: #eef2ff;
+      --radius: 12px;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--slate-50);
+      color: var(--navy-950);
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Header */
+    .topbar {
+      background: var(--navy-950);
+      color: var(--white);
+      border-bottom: 1px solid var(--navy-800);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: var(--white);
+      color: var(--navy-950);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 6px 11px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-text h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      font-size: 0.78rem;
+      color: var(--slate-400);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: var(--navy-900);
+      border: 1px solid var(--navy-800);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--slate-200);
+    }
+
+    .stat-pill strong {
+      color: var(--emerald-500);
+    }
+
+    .icon-btn {
+      background: var(--navy-900);
+      color: var(--white);
+      border: 1px solid var(--navy-800);
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: var(--navy-800);
+    }
+
+    .icon-btn.muted {
+      color: var(--slate-400);
+    }
+
+    /* Progress Strip */
+    .progress-strip {
+      background: var(--navy-900);
+      height: 5px;
+      width: 100%;
+    }
+
+    .progress-strip-fill {
+      background: var(--emerald-500);
+      height: 100%;
+      width: 0%;
+      transition: width 0.35s ease;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      background: var(--white);
+      padding: 6px;
+      border-radius: var(--radius);
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-tab {
+      border: none;
+      background: transparent;
+      color: var(--slate-600);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .nav-tab:hover {
+      background: var(--slate-100);
+      color: var(--navy-950);
+    }
+
+    .nav-tab.active {
+      background: var(--navy-950);
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Control / Filter Bar */
+    .filter-bar {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    select, input[type="text"] {
+      font-family: inherit;
+      font-size: 0.88rem;
+      padding: 8px 12px;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      background: var(--slate-50);
+      color: var(--navy-950);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: var(--navy-950);
+      background: var(--white);
+    }
+
+    .btn {
+      font-family: inherit;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 9px 15px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--navy-950);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-900);
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--navy-950);
+      border-color: var(--slate-200);
+    }
+
+    .btn-outline:hover {
+      background: var(--slate-100);
+    }
+
+    .btn-success {
+      background: var(--emerald-600);
+      color: var(--white);
+    }
+
+    .btn-success:hover {
+      background: var(--emerald-500);
+    }
+
+    .btn-danger-outline {
+      background: var(--white);
+      color: var(--rose-600);
+      border-color: var(--rose-100);
+    }
+
+    .btn-danger-outline:hover {
+      background: var(--rose-50);
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* Card Surface */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .module-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .module-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--navy-950);
+    }
+
+    .module-subtitle {
+      font-size: 0.85rem;
+      color: var(--slate-500);
+      margin-top: 2px;
+    }
+
+    .submode-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .submode-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--slate-200);
+      background: var(--slate-50);
+      color: var(--slate-600);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .submode-pill.active {
+      background: var(--navy-950);
+      color: var(--white);
+      border-color: var(--navy-950);
+    }
+
+    /* Quiz Layout */
+    .quiz-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .badge-navy {
+      background: var(--navy-950);
+      color: var(--white);
+    }
+
+    .badge-slate {
+      background: var(--slate-100);
+      color: var(--navy-900);
+    }
+
+    .badge-green {
+      background: var(--emerald-100);
+      color: var(--emerald-600);
+    }
+
+    .badge-red {
+      background: var(--rose-100);
+      color: var(--rose-600);
+    }
+
+    .badge-amber {
+      background: var(--amber-100);
+      color: var(--amber-600);
+    }
+
+    .prompt-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .prompt-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--slate-500);
+      margin-bottom: 8px;
+    }
+
+    .prompt-main {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--navy-950);
+      margin-bottom: 6px;
+    }
+
+    .prompt-ipa {
+      font-family: "Lucida Sans Unicode", "DejaVu Sans", Arial, sans-serif;
+      font-size: 0.96rem;
+      color: var(--slate-500);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .option-btn {
+      background: var(--white);
+      border: 2px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 15px 16px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: inherit;
+      font-size: 0.96rem;
+      font-weight: 500;
+      color: var(--navy-950);
+      transition: all 0.14s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--navy-900);
+      background: var(--slate-50);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--slate-100);
+      color: var(--navy-950);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .option-btn.correct {
+      background: var(--emerald-50);
+      border-color: var(--emerald-500);
+      color: var(--navy-950);
+    }
+
+    .option-btn.correct .option-letter {
+      background: var(--emerald-500);
+      color: var(--white);
+    }
+
+    .option-btn.wrong {
+      background: var(--rose-50);
+      border-color: var(--rose-500);
+      color: var(--navy-950);
+    }
+
+    .option-btn.wrong .option-letter {
+      background: var(--rose-500);
+      color: var(--white);
+    }
+
+    /* Feedback Box */
+    .feedback-box {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .feedback-box.correct {
+      background: var(--emerald-50);
+      border-color: var(--emerald-500);
+    }
+
+    .feedback-box.wrong {
+      background: var(--rose-50);
+      border-color: var(--rose-500);
+    }
+
+    .feedback-text h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .feedback-text p {
+      font-size: 0.88rem;
+      color: var(--navy-900);
+    }
+
+    /* Listening & Dictation */
+    .audio-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .cloze-sentence {
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 2;
+      color: var(--navy-950);
+      margin: 12px 0;
+    }
+
+    .cloze-input {
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border: none;
+      border-bottom: 2px solid var(--navy-950);
+      background: var(--white);
+      color: var(--navy-950);
+      text-align: center;
+      width: 150px;
+      border-radius: 4px 4px 0 0;
+      outline: none;
+    }
+
+    .cloze-input.ok {
+      border-color: var(--emerald-600);
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+    }
+
+    .cloze-input.bad {
+      border-color: var(--rose-600);
+      background: var(--rose-50);
+      color: var(--rose-600);
+    }
+
+    /* Speaking & Shadowing */
+    .mic-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: none;
+      background: var(--navy-950);
+      color: var(--white);
+      font-size: 1.6rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .mic-btn:hover {
+      transform: scale(1.05);
+      background: var(--navy-900);
+    }
+
+    .mic-btn.recording {
+      background: var(--rose-600);
+      animation: pulse 1.2s infinite;
+    }
+
+    .word-diff {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .word-tag {
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .word-tag.hit {
+      background: var(--emerald-100);
+      color: var(--emerald-600);
+    }
+
+    .word-tag.miss {
+      background: var(--rose-100);
+      color: var(--rose-600);
+    }
+
+    /* Writing & Sentence Building */
+    .builder-zone {
+      min-height: 62px;
+      border: 2px dashed var(--slate-200);
+      border-radius: var(--radius);
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .word-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .chip {
+      padding: 8px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      background: var(--slate-50);
+      color: var(--navy-950);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.12s;
+      user-select: none;
+    }
+
+    .chip:hover {
+      background: var(--slate-100);
+      border-color: var(--navy-900);
+    }
+
+    .chip.selected {
+      background: var(--navy-950);
+      color: var(--white);
+      border-color: var(--navy-950);
+    }
+
+    .chip.used {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .typing-input {
+      width: 100%;
+      max-width: 620px;
+      padding: 13px 16px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      border: 2px solid var(--slate-200);
+      border-radius: var(--radius);
+      text-align: center;
+      background: var(--white);
+    }
+
+    .typing-input:focus {
+      border-color: var(--navy-950);
+    }
+
+    /* Reference Library Table */
+    .library-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: var(--navy-950);
+      color: var(--white);
+    }
+
+    th, td {
+      padding: 11px 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--slate-100);
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: var(--slate-50);
+    }
+
+    .row-mastered {
+      background: #f0fdf4;
+    }
+
+    .en-cell {
+      font-weight: 700;
+      color: var(--navy-950);
+    }
+
+    .ipa-cell {
+      font-family: "Lucida Sans Unicode", "DejaVu Sans", Arial, sans-serif;
+      color: var(--slate-600);
+      font-size: 0.85rem;
+    }
+
+    .unit-tag {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--slate-100);
+      color: var(--navy-900);
+      margin-bottom: 3px;
+    }
+
+    .note-banner {
+      background: var(--amber-50);
+      border: 1px solid var(--amber-100);
+      color: var(--navy-950);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      margin-bottom: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--slate-500);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 0.8rem;
+      color: var(--slate-500);
+      border-top: 1px solid var(--slate-200);
+      background: var(--white);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.5); }
+      70% { box-shadow: 0 0 0 16px rgba(225, 29, 72, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+    }
+
+    @media (max-width: 820px) {
+      .nav-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      .prompt-main {
+        font-size: 1.2rem;
+      }
+      .container {
+        padding: 12px;
+      }
+      .card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation & Stats -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">P1</div>
+        <div class="brand-text">
+          <h1>Before Class &amp; Welcoming Students</h1>
+          <p>USPEAK Classroom English • Kho dữ liệu chuẩn 222 mẫu câu (4 Units)</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="stat-pill" title="Tiến độ ghi nhớ trên tổng số 222 mẫu câu">
+          <span>Đã thuộc:</span>
+          <strong id="masteredCount">0</strong> / <span id="totalCount">222</span>
+        </div>
+        <div class="stat-pill" title="Số câu làm sai cần ôn tập">
+          <span>Cần ôn:</span>
+          <strong id="reviewCount" style="color: #fb7185;">0</strong>
+        </div>
+        <button id="soundToggleBtn" class="icon-btn" onclick="toggleSound()">
+          🔊 Âm thanh: Bật
+        </button>
+        <button class="icon-btn" onclick="resetProgress()" title="Đặt lại toàn bộ tiến độ học">
+          ↺ Đặt lại
+        </button>
+      </div>
+    </div>
+    <div class="progress-strip">
+      <div id="globalProgressFill" class="progress-strip-fill"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 5 Main Tabs -->
+    <nav class="nav-tabs" aria-label="Chế độ luyện tập">
+      <button class="nav-tab active" data-tab="reading" onclick="switchTab('reading')">📖 Đọc hiểu</button>
+      <button class="nav-tab" data-tab="listening" onclick="switchTab('listening')">🎧 Nghe &amp; Điền từ</button>
+      <button class="nav-tab" data-tab="speaking" onclick="switchTab('speaking')">🎙️ Nói &amp; Shadowing</button>
+      <button class="nav-tab" data-tab="writing" onclick="switchTab('writing')">✍️ Viết &amp; Ghép câu</button>
+      <button class="nav-tab" data-tab="library" onclick="switchTab('library')">📚 Kho 222 mẫu câu</button>
+    </nav>
+
+    <!-- Shared Filter Bar -->
+    <section class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Phạm vi:</span>
+        <select id="unitFilter" onchange="onUnitChange()">
+          <option value="all">Tất cả 4 Units (222 câu)</option>
+          <option value="1">Unit 1: Welcoming Students (40 câu)</option>
+          <option value="2">Unit 2: Greeting Students Individually (56 câu)</option>
+          <option value="3">Unit 3: Getting Students Ready (58 câu)</option>
+          <option value="4">Unit 4: Daily Classroom Routine (68 câu)</option>
+        </select>
+
+        <select id="sectionFilter" onchange="onFilterChange()">
+          <option value="all">Tất cả tình huống</option>
+        </select>
+
+        <select id="statusFilter" onchange="onFilterChange()">
+          <option value="all">Tất cả trạng thái</option>
+          <option value="unmastered">Chưa thuộc</option>
+          <option value="wrong">Các câu làm sai / Cần ôn</option>
+          <option value="mastered">Đã thuộc</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <span class="badge badge-slate" id="poolBadge">Đang chọn: 222 câu</span>
+        <button class="btn btn-outline btn-sm" onclick="restartCurrentMode()">🔀 Trộn đề mới</button>
+      </div>
+    </section>
+
+    <!-- Dynamic Workspace -->
+    <section id="workspace" class="card"></section>
+  </main>
+
+  <footer class="footer">
+    Ứng dụng tự học 4 kỹ năng tiếng Anh giao tiếp lớp học — Dữ liệu trích xuất đầy đủ 100% từ tài liệu <strong>Part 1: Before Class &amp; Welcoming Students</strong> (222 mẫu câu).
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. TOÀN BỘ KHO DỮ LIỆU 222 MẪU CÂU (KHÔNG BỎ SÓT BẤT KỲ CÂU NÀO)
+    // =========================================================================
+    const UNIT_META = {
+      1: {
+        title: "Unit 1: Welcoming Students",
+        goal: "Giáo viên có thể chào đón học sinh khi các em bước vào lớp, hỏi thăm ngắn gọn và tạo không khí tích cực trước khi bắt đầu bài học."
+      },
+      2: {
+        title: "Unit 2: Greeting Students Individually",
+        goal: "Chào hỏi từng học sinh và có những tương tác cá nhân ngắn."
+      },
+      3: {
+        title: "Unit 3: Getting Students Ready (Ổn định lớp)",
+        goal: "Giáo viên có thể yêu cầu học sinh ngồi đúng chỗ, chuẩn bị sách vở, cất đồ dùng không cần thiết, tập trung và sẵn sàng bắt đầu bài học."
+      },
+      4: {
+        title: "Unit 4: Daily Classroom Routine (Các hoạt động thường nhật đầu giờ)",
+        goal: "Hỏi ngày tháng, thời tiết, lịch học, kiểm tra bài cũ, hỏi thăm hôm qua/cuối tuần và kéo dài tương tác (follow-up)."
+      }
+    };
+
+    const RAW_SENTENCES = [
+      // ================= UNIT 1 (40 câu: #1 -> #40) =================
+      // A: Chào học sinh khi bước vào lớp (1-10)
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 1, en: "Good morning, everyone!", ipa: "/ɡʊd ˈmɔrnɪŋ ˈɛvriˌwʌn/", vi: "Chào buổi sáng cả lớp!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 2, en: "Good afternoon, everyone!", ipa: "/ɡʊd ˌæftərˈnun ˈɛvriˌwʌn/", vi: "Chào buổi chiều cả lớp!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 3, en: "Hello, everyone!", ipa: "/həˈloʊ ˈɛvriˌwʌn/", vi: "Xin chào cả lớp!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 4, en: "Hi, everyone!", ipa: "/haɪ ˈɛvriˌwʌn/", vi: "Chào cả lớp!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 5, en: "Welcome to class!", ipa: "/ˈwɛlkəm tə klæs/", vi: "Chào mừng các em đến lớp!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 6, en: "Come on in!", ipa: "/kʌm ɑn ɪn/", vi: "Vào lớp đi các em!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 7, en: "Come in and have a seat.", ipa: "/kʌm ɪn ən hæv ə sit/", vi: "Vào lớp và ngồi xuống nhé." },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 8, en: "It's good to see you!", ipa: "/ɪts ɡʊd tə si ju/", vi: "Rất vui được gặp em!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 9, en: "It's good to see you again!", ipa: "/ɪts ɡʊd tə si ju əˈɡɛn/", vi: "Rất vui được gặp lại em!" },
+      { u: 1, sec: "A. Chào học sinh khi bước vào lớp", num: 10, en: "I'm happy to see you all today.", ipa: "/aɪm ˈhæpi tə si ju ɔl təˈdeɪ/", vi: "Cô/thầy rất vui được gặp các em hôm nay." },
+
+      // B: Hỏi thăm học sinh (11-18)
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 11, en: "How are you today?", ipa: "/haʊ ɑr ju təˈdeɪ/", vi: "Hôm nay em thế nào?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 12, en: "How's everyone doing today?", ipa: "/haʊz ˈɛvriˌwʌn ˈduɪŋ təˈdeɪ/", vi: "Hôm nay cả lớp thế nào?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 13, en: "How are you feeling today?", ipa: "/haʊ ɑr ju ˈfilɪŋ təˈdeɪ/", vi: "Hôm nay em cảm thấy thế nào?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 14, en: "Did you have a good morning?", ipa: "/dɪd ju hæv ə ɡʊd ˈmɔrnɪŋ/", vi: "Sáng nay của em ổn chứ?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 15, en: "Did you have a good weekend?", ipa: "/dɪd ju hæv ə ɡʊd ˈwikˌɛnd/", vi: "Cuối tuần của em vui chứ?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 16, en: "Are you feeling good today?", ipa: "/ɑr ju ˈfilɪŋ ɡʊd təˈdeɪ/", vi: "Hôm nay em cảm thấy ổn chứ?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 17, en: "Is everyone doing okay?", ipa: "/ɪz ˈɛvriˌwʌn ˈduɪŋ oʊˈkeɪ/", vi: "Mọi người đều ổn chứ?" },
+      { u: 1, sec: "B. Hỏi thăm học sinh", num: 18, en: "Are you ready for class?", ipa: "/ɑr ju ˈrɛdi fər klæs/", vi: "Các em sẵn sàng vào học chưa?" },
+
+      // C: Tạo năng lượng tích cực đầu giờ (19-25)
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 19, en: "It's great to have you here.", ipa: "/ɪts ɡreɪt tə hæv ju hɪr/", vi: "Rất vui vì các em có mặt ở đây." },
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 20, en: "I hope you're having a good day.", ipa: "/aɪ hoʊp jʊr ˈhævɪŋ ə ɡʊd deɪ/", vi: "Cô/thầy hy vọng các em đang có một ngày vui vẻ." },
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 21, en: "You look happy today!", ipa: "/ju lʊk ˈhæpi təˈdeɪ/", vi: "Hôm nay trông em vui đấy!" },
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 22, en: "You look ready to learn!", ipa: "/ju lʊk ˈrɛdi tə lɜrn/", vi: "Trông các em có vẻ sẵn sàng học rồi đấy!" },
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 23, en: "Let's have a great class today!", ipa: "/lɛts hæv ə ɡreɪt klæs təˈdeɪ/", vi: "Hôm nay chúng ta cùng có một buổi học thật tuyệt nhé!" },
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 24, en: "Let's have some fun today!", ipa: "/lɛts hæv sʌm fʌn təˈdeɪ/", vi: "Hôm nay chúng ta cùng học thật vui nhé!" },
+      { u: 1, sec: "C. Tạo năng lượng tích cực đầu giờ", num: 25, en: "Let's make today a great day!", ipa: "/lɛts meɪk təˈdeɪ ə ɡreɪt deɪ/", vi: "Hãy cùng biến hôm nay thành một ngày thật tuyệt nhé!" },
+
+      // D: Chào đón học sinh quay lại lớp (26-30)
+      { u: 1, sec: "D. Chào đón học sinh quay lại lớp", num: 26, en: "Welcome back!", ipa: "/ˈwɛlkəm bæk/", vi: "Chào mừng em quay lại!" },
+      { u: 1, sec: "D. Chào đón học sinh quay lại lớp", num: 27, en: "Welcome back to class!", ipa: "/ˈwɛlkəm bæk tə klæs/", vi: "Chào mừng các em quay lại lớp!" },
+      { u: 1, sec: "D. Chào đón học sinh quay lại lớp", num: 28, en: "We're happy to have you back.", ipa: "/wɪr ˈhæpi tə hæv ju bæk/", vi: "Cô/thầy rất vui vì em đã quay lại." },
+      { u: 1, sec: "D. Chào đón học sinh quay lại lớp", num: 29, en: "We missed you!", ipa: "/wi mɪst ju/", vi: "Mọi người nhớ em đấy!" },
+      { u: 1, sec: "D. Chào đón học sinh quay lại lớp", num: 30, en: "It's nice to have everyone back together.", ipa: "/ɪts naɪs tə hæv ˈɛvriˌwʌn bæk təˈɡɛðər/", vi: "Thật vui khi cả lớp lại có mặt đông đủ." },
+
+      // E: Chào đón học sinh mới (31-35)
+      { u: 1, sec: "E. Chào đón học sinh mới", num: 31, en: "Welcome to our class!", ipa: "/ˈwɛlkəm tə aʊər klæs/", vi: "Chào mừng em đến với lớp!" },
+      { u: 1, sec: "E. Chào đón học sinh mới", num: 32, en: "We have a new student today.", ipa: "/wi hæv ə nu ˈstudənt təˈdeɪ/", vi: "Hôm nay lớp chúng ta có một bạn mới." },
+      { u: 1, sec: "E. Chào đón học sinh mới", num: 33, en: "Let's welcome our new classmate.", ipa: "/lɛts ˈwɛlkəm aʊər nu ˈklæsˌmeɪt/", vi: "Hãy cùng chào đón bạn mới nào." },
+      { u: 1, sec: "E. Chào đón học sinh mới", num: 34, en: "We're happy to have you with us.", ipa: "/wɪr ˈhæpi tə hæv ju wɪð ʌs/", vi: "Cả lớp rất vui khi có em tham gia." },
+      { u: 1, sec: "E. Chào đón học sinh mới", num: 35, en: "Please make yourself comfortable.", ipa: "/pliz meɪk jərˈsɛlf ˈkʌmftərbəl/", vi: "Em cứ tự nhiên nhé." },
+
+      // F: Chuyển từ chào hỏi sang bắt đầu tiết học (36-40)
+      { u: 1, sec: "F. Chuyển từ chào hỏi sang bắt đầu tiết học", num: 36, en: "Okay, everyone. Let's get started.", ipa: "/oʊˈkeɪ ˈɛvriˌwʌn, lɛts ɡɛt ˈstɑrtɪd/", vi: "Được rồi cả lớp. Chúng ta bắt đầu nhé." },
+      { u: 1, sec: "F. Chuyển từ chào hỏi sang bắt đầu tiết học", num: 37, en: "Are we ready to start?", ipa: "/ɑr wi ˈrɛdi tə stɑrt/", vi: "Chúng ta sẵn sàng bắt đầu chưa?" },
+      { u: 1, sec: "F. Chuyển từ chào hỏi sang bắt đầu tiết học", num: 38, en: "Is everyone ready?", ipa: "/ɪz ˈɛvriˌwʌn ˈrɛdi/", vi: "Cả lớp sẵn sàng chưa?" },
+      { u: 1, sec: "F. Chuyển từ chào hỏi sang bắt đầu tiết học", num: 39, en: "Let's start today's lesson.", ipa: "/lɛts stɑrt təˈdeɪz ˈlɛsən/", vi: "Chúng ta bắt đầu bài học hôm nay nhé." },
+      { u: 1, sec: "F. Chuyển từ chào hỏi sang bắt đầu tiết học", num: 40, en: "Let's see what we're learning today.", ipa: "/lɛts si wʌt wɪr ˈlɜrnɪŋ təˈdeɪ/", vi: "Hãy xem hôm nay chúng ta sẽ học gì nhé." },
+
+      // ================= UNIT 2 (56 câu: #1 -> #56) =================
+      // 1: Chào học sinh khi bước vào lớp (1-8)
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 1, en: "Good morning, Minh!", ipa: "/ɡʊd ˈmɔrnɪŋ, mɪn/", vi: "Chào buổi sáng, Minh!" },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 2, en: "Hi, Lan! How are you?", ipa: "/haɪ, læn! haʊ ɑr ju/", vi: "Chào Lan! Em khỏe không?" },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 3, en: "Hey, Nam! Good to see you.", ipa: "/heɪ, næm! ɡʊd tə si ju/", vi: "Chào Nam! Rất vui được gặp em." },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 4, en: "Nice to see you again.", ipa: "/naɪs tə si ju əˈɡɛn/", vi: "Rất vui được gặp lại em." },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 5, en: "Welcome back!", ipa: "/ˈwɛlkəm bæk/", vi: "Chào mừng em quay lại!" },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 6, en: "Come on in.", ipa: "/kʌm ɑn ɪn/", vi: "Vào lớp đi em." },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 7, en: "Good to have you here today.", ipa: "/ɡʊd tə hæv ju hɪr təˈdeɪ/", vi: "Rất vui vì hôm nay em có mặt." },
+      { u: 2, sec: "1. Chào học sinh khi bước vào lớp", num: 8, en: "Glad you're here.", ipa: "/ɡlæd jʊr hɪr/", vi: "Cô/thầy rất vui vì em đã đến." },
+
+      // 2: Hỏi thăm học sinh nhanh (9-16)
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 9, en: "How are you today?", ipa: "/haʊ ɑr ju təˈdeɪ/", vi: "Hôm nay em thế nào?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 10, en: "How are you doing?", ipa: "/haʊ ɑr ju ˈduɪŋ/", vi: "Em thế nào rồi?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 11, en: "How's your day going?", ipa: "/haʊz jʊr deɪ ˈɡoʊɪŋ/", vi: "Hôm nay của em thế nào rồi?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 12, en: "How was your morning?", ipa: "/haʊ wəz jʊr ˈmɔrnɪŋ/", vi: "Buổi sáng của em thế nào?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 13, en: "Did you have a good morning?", ipa: "/dɪd ju hæv ə ɡʊd ˈmɔrnɪŋ/", vi: "Sáng nay em ổn chứ?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 14, en: "How are things today?", ipa: "/haʊ ɑr θɪŋz təˈdeɪ/", vi: "Hôm nay mọi chuyện thế nào?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 15, en: "Everything okay?", ipa: "/ˈɛvriˌθɪŋ oʊˈkeɪ/", vi: "Mọi thứ ổn chứ?" },
+      { u: 2, sec: "2. Hỏi thăm học sinh nhanh", num: 16, en: "Are you doing okay?", ipa: "/ɑr ju ˈduɪŋ oʊˈkeɪ/", vi: "Em vẫn ổn chứ?" },
+
+      // 3: Hỏi về tâm trạng của học sinh (17-22)
+      { u: 2, sec: "3. Hỏi về tâm trạng của học sinh", num: 17, en: "How are you feeling today?", ipa: "/haʊ ɑr ju ˈfilɪŋ təˈdeɪ/", vi: "Hôm nay em cảm thấy thế nào?" },
+      { u: 2, sec: "3. Hỏi về tâm trạng của học sinh", num: 18, en: "You look happy today.", ipa: "/ju lʊk ˈhæpi təˈdeɪ/", vi: "Hôm nay trông em vui quá." },
+      { u: 2, sec: "3. Hỏi về tâm trạng của học sinh", num: 19, en: "You look a little tired. Are you okay?", ipa: "/ju lʊk ə ˈlɪtəl ˈtaɪərd. ɑr ju oʊˈkeɪ/", vi: "Trông em hơi mệt. Em ổn không?" },
+      { u: 2, sec: "3. Hỏi về tâm trạng của học sinh", num: 20, en: "You seem quiet today. Everything okay?", ipa: "/ju sim ˈkwaɪət təˈdeɪ. ˈɛvriˌθɪŋ oʊˈkeɪ/", vi: "Hôm nay em có vẻ ít nói. Mọi chuyện ổn chứ?" },
+      { u: 2, sec: "3. Hỏi về tâm trạng của học sinh", num: 21, en: "Are you feeling better today?", ipa: "/ɑr ju ˈfilɪŋ ˈbɛtər təˈdeɪ/", vi: "Hôm nay em thấy khỏe hơn chưa?" },
+      { u: 2, sec: "3. Hỏi về tâm trạng của học sinh", num: 22, en: "Feeling good today?", ipa: "/ˈfilɪŋ ɡʊd təˈdeɪ/", vi: "Hôm nay thấy ổn chứ?" },
+
+      // 4: Khi học sinh nghỉ học hôm trước hoặc quay lại lớp (23-28)
+      { u: 2, sec: "4. Khi học sinh nghỉ học hôm trước hoặc quay lại lớp", num: 23, en: "We missed you yesterday.", ipa: "/wi mɪst ju ˈjɛstərdeɪ/", vi: "Hôm qua cả lớp thiếu em đấy." },
+      { u: 2, sec: "4. Khi học sinh nghỉ học hôm trước hoặc quay lại lớp", num: 24, en: "Good to see you back.", ipa: "/ɡʊd tə si ju bæk/", vi: "Rất vui khi thấy em quay lại." },
+      { u: 2, sec: "4. Khi học sinh nghỉ học hôm trước hoặc quay lại lớp", num: 25, en: "Are you feeling better now?", ipa: "/ɑr ju ˈfilɪŋ ˈbɛtər naʊ/", vi: "Bây giờ em thấy khỏe hơn chưa?" },
+      { u: 2, sec: "4. Khi học sinh nghỉ học hôm trước hoặc quay lại lớp", num: 26, en: "How are you feeling now?", ipa: "/haʊ ɑr ju ˈfilɪŋ naʊ/", vi: "Bây giờ em cảm thấy thế nào?" },
+      { u: 2, sec: "4. Khi học sinh nghỉ học hôm trước hoặc quay lại lớp", num: 27, en: "Everything okay now?", ipa: "/ˈɛvriˌθɪŋ oʊˈkeɪ naʊ/", vi: "Bây giờ mọi thứ ổn rồi chứ?" },
+      { u: 2, sec: "4. Khi học sinh nghỉ học hôm trước hoặc quay lại lớp", num: 28, en: "Welcome back to class.", ipa: "/ˈwɛlkəm bæk tə klæs/", vi: "Chào mừng em quay lại lớp." },
+
+      // 5: Những tương tác cá nhân rất ngắn (29-36)
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 29, en: "Did you sleep well?", ipa: "/dɪd ju slip wɛl/", vi: "Tối qua em ngủ ngon không?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 30, en: "Did you have breakfast?", ipa: "/dɪd ju hæv ˈbrɛkfəst/", vi: "Em ăn sáng chưa?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 31, en: "Did you have a good weekend?", ipa: "/dɪd ju hæv ə ɡʊd ˈwikˌɛnd/", vi: "Cuối tuần của em vui không?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 32, en: "What did you do this weekend?", ipa: "/wʌt dɪd ju du ðɪs ˈwikˌɛnd/", vi: "Cuối tuần em đã làm gì?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 33, en: "Did anything fun happen today?", ipa: "/dɪd ˈɛniˌθɪŋ fʌn ˈhæpən təˈdeɪ/", vi: "Hôm nay có chuyện gì vui không?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 34, en: "How was lunch?", ipa: "/haʊ wəz lʌntʃ/", vi: "Bữa trưa của em thế nào?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 35, en: "Did you enjoy your break?", ipa: "/dɪd ju ɪnˈdʒɔɪ jʊr breɪk/", vi: "Giờ nghỉ của em vui không?" },
+      { u: 2, sec: "5. Những tương tác cá nhân rất ngắn", num: 36, en: "Ready for class?", ipa: "/ˈrɛdi fər klæs/", vi: "Sẵn sàng học chưa?" },
+
+      // 6: Kiểm tra sự chuẩn bị của từng học sinh (37-44)
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 37, en: "Are you ready for class?", ipa: "/ɑr ju ˈrɛdi fər klæs/", vi: "Em sẵn sàng vào học chưa?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 38, en: "Do you have everything you need?", ipa: "/du ju hæv ˈɛvriˌθɪŋ ju nid/", vi: "Em có đủ đồ dùng cần thiết chưa?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 39, en: "Do you have your book?", ipa: "/du ju hæv jʊr bʊk/", vi: "Em có mang sách không?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 40, en: "Do you have your notebook?", ipa: "/du ju hæv jʊr ˈnoʊtˌbʊk/", vi: "Em có mang vở không?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 41, en: "Do you have a pencil?", ipa: "/du ju hæv ə ˈpɛnsəl/", vi: "Em có bút chì không?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 42, en: "Did you bring your homework?", ipa: "/dɪd ju brɪŋ jʊr ˈhoʊmˌwɜrk/", vi: "Em có mang bài tập về nhà không?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 43, en: "Did you finish your homework?", ipa: "/dɪd ju ˈfɪnɪʃ jʊr ˈhoʊmˌwɜrk/", vi: "Em làm xong bài tập chưa?" },
+      { u: 2, sec: "6. Kiểm tra sự chuẩn bị của từng học sinh", num: 44, en: "All set?", ipa: "/ɔl sɛt/", vi: "Chuẩn bị xong hết chưa?" },
+
+      // 7: Khi học sinh đến muộn (45-50)
+      { u: 2, sec: "7. Khi học sinh đến muộn", num: 45, en: "Hi, come on in.", ipa: "/haɪ, kʌm ɑn ɪn/", vi: "Chào em, vào lớp đi." },
+      { u: 2, sec: "7. Khi học sinh đến muộn", num: 46, en: "Good morning. Take your seat.", ipa: "/ɡʊd ˈmɔrnɪŋ. teɪk jʊr sit/", vi: "Chào buổi sáng. Em về chỗ ngồi nhé." },
+      { u: 2, sec: "7. Khi học sinh đến muộn", num: 47, en: "Is everything okay?", ipa: "/ɪz ˈɛvriˌθɪŋ oʊˈkeɪ/", vi: "Mọi chuyện ổn chứ?" },
+      { u: 2, sec: "7. Khi học sinh đến muộn", num: 48, en: "What happened this morning?", ipa: "/wʌt ˈhæpənd ðɪs ˈmɔrnɪŋ/", vi: "Sáng nay có chuyện gì vậy?" },
+      { u: 2, sec: "7. Khi học sinh đến muộn", num: 49, en: "You're a little late today.", ipa: "/jʊr ə ˈlɪtəl leɪt təˈdeɪ/", vi: "Hôm nay em đến hơi muộn nhé." },
+      { u: 2, sec: "7. Khi học sinh đến muộn", num: 50, en: "Try to be on time tomorrow, okay?", ipa: "/traɪ tə bi ɑn taɪm təˈmɑroʊ, oʊˈkeɪ/", vi: "Ngày mai cố gắng đến đúng giờ nhé." },
+
+      // 8: Khen hoặc ghi nhận học sinh ngay đầu giờ (51-56)
+      { u: 2, sec: "8. Khen hoặc ghi nhận học sinh ngay đầu giờ", num: 51, en: "I like your energy today.", ipa: "/aɪ laɪk jʊr ˈɛnərdʒi təˈdeɪ/", vi: "Cô/thầy thích năng lượng của em hôm nay." },
+      { u: 2, sec: "8. Khen hoặc ghi nhận học sinh ngay đầu giờ", num: 52, en: "You look ready to learn today.", ipa: "/ju lʊk ˈrɛdi tə lɜrn təˈdeɪ/", vi: "Hôm nay trông em rất sẵn sàng học đấy." },
+      { u: 2, sec: "8. Khen hoặc ghi nhận học sinh ngay đầu giờ", num: 53, en: "Thanks for being on time.", ipa: "/θæŋks fər ˈbiɪŋ ɑn taɪm/", vi: "Cảm ơn em vì đã đến đúng giờ." },
+      { u: 2, sec: "8. Khen hoặc ghi nhận học sinh ngay đầu giờ", num: 54, en: "Thanks for being prepared.", ipa: "/θæŋks fər ˈbiɪŋ priˈpɛrd/", vi: "Cảm ơn em vì đã chuẩn bị đầy đủ." },
+      { u: 2, sec: "8. Khen hoặc ghi nhận học sinh ngay đầu giờ", num: 55, en: "I'm glad to see that smile.", ipa: "/aɪm ɡlæd tə si ðæt smaɪl/", vi: "Cô/thầy rất vui khi thấy nụ cười đó." },
+      { u: 2, sec: "8. Khen hoặc ghi nhận học sinh ngay đầu giờ", num: 56, en: "You seem excited today!", ipa: "/ju sim ɪkˈsaɪtɪd təˈdeɪ/", vi: "Hôm nay trông em hào hứng quá!" },
+
+      // ================= UNIT 3 (58 câu: #1 -> #58) =================
+      // 1: Yêu cầu học sinh về chỗ và ngồi ngay ngắn (1-8)
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 1, en: "Please take your seat.", ipa: "/pliz teɪk jʊr sit/", vi: "Em ngồi vào chỗ nhé." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 2, en: "Everyone, take your seats.", ipa: "/ˈɛvriˌwʌn, teɪk jʊr sits/", vi: "Cả lớp, ngồi vào chỗ nào." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 3, en: "Go back to your seat, please.", ipa: "/ɡoʊ bæk tə jʊr sit, pliz/", vi: "Em quay về chỗ ngồi nhé." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 4, en: "Sit down, please.", ipa: "/sɪt daʊn, pliz/", vi: "Em ngồi xuống nhé." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 5, en: "Sit properly, please.", ipa: "/sɪt ˈprɑpərli, pliz/", vi: "Em ngồi ngay ngắn nhé." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 6, en: "Face the front, please.", ipa: "/feɪs ðə frʌnt, pliz/", vi: "Nhìn lên phía trước nhé." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 7, en: "Turn around and face the front.", ipa: "/tɜrn əˈraʊnd ən feɪs ðə frʌnt/", vi: "Quay lại và nhìn lên phía trước." },
+      { u: 3, sec: "1. Yêu cầu học sinh về chỗ và ngồi ngay ngắn", num: 8, en: "Stay in your seat, please.", ipa: "/steɪ ɪn jʊr sit, pliz/", vi: "Em ngồi yên tại chỗ nhé." },
+
+      // 2: Chuẩn bị sách vở và dụng cụ học tập (9-16)
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 9, en: "Get your books ready.", ipa: "/ɡɛt jʊr bʊks ˈrɛdi/", vi: "Chuẩn bị sách nhé." },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 10, en: "Take out your books.", ipa: "/teɪk aʊt jʊr bʊks/", vi: "Lấy sách ra nhé." },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 11, en: "Take out your notebooks.", ipa: "/teɪk aʊt jʊr ˈnoʊtˌbʊks/", vi: "Lấy vở ra nhé." },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 12, en: "Get your notebooks ready.", ipa: "/ɡɛt jʊr ˈnoʊtˌbʊks ˈrɛdi/", vi: "Chuẩn bị vở nhé." },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 13, en: "Take out a pen or pencil.", ipa: "/teɪk aʊt ə pɛn ɔr ˈpɛnsəl/", vi: "Lấy bút mực hoặc bút chì ra nhé." },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 14, en: "Make sure you have everything you need.", ipa: "/meɪk ʃʊr ju hæv ˈɛvriˌθɪŋ ju nid/", vi: "Hãy chắc chắn em có đủ đồ dùng cần thiết." },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 15, en: "Do you have your book and notebook?", ipa: "/du ju hæv jʊr bʊk ən ˈnoʊtˌbʊk/", vi: "Em có sách và vở chưa?" },
+      { u: 3, sec: "2. Chuẩn bị sách vở và dụng cụ học tập", num: 16, en: "Please get your materials ready.", ipa: "/pliz ɡɛt jʊr məˈtɪriəlz ˈrɛdi/", vi: "Chuẩn bị đồ dùng học tập nhé." },
+
+      // 3: Mở sách, vở đúng chỗ (17-24)
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 17, en: "Open your book, please.", ipa: "/ˈoʊpən jʊr bʊk, pliz/", vi: "Mở sách ra nhé." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 18, en: "Open your book to page ten.", ipa: "/ˈoʊpən jʊr bʊk tə peɪdʒ tɛn/", vi: "Mở sách trang 10." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 19, en: "Turn to page fifteen.", ipa: "/tɜrn tə peɪdʒ ˌfɪfˈtin/", vi: "Mở đến trang 15." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 20, en: "Find page twenty.", ipa: "/faɪnd peɪdʒ ˈtwɛnti/", vi: "Tìm trang 20 nhé." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 21, en: "Open your notebook.", ipa: "/ˈoʊpən jʊr ˈnoʊtˌbʊk/", vi: "Mở vở ra nhé." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 22, en: "Start a new page.", ipa: "/stɑrt ə nu peɪdʒ/", vi: "Sang một trang mới nhé." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 23, en: "Write the date at the top.", ipa: "/raɪt ðə deɪt æt ðə tɑp/", vi: "Viết ngày tháng ở đầu trang." },
+      { u: 3, sec: "3. Mở sách, vở đúng chỗ", num: 24, en: "Write today's date, please.", ipa: "/raɪt təˈdeɪz deɪt, pliz/", vi: "Viết ngày hôm nay nhé." },
+
+      // 4: Cất những đồ không cần thiết (25-32)
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 25, en: "Put your things away, please.", ipa: "/pʊt jʊr θɪŋz əˈweɪ, pliz/", vi: "Cất đồ của em đi nhé." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 26, en: "Put your bag under your desk.", ipa: "/pʊt jʊr bæɡ ˈʌndər jʊr dɛsk/", vi: "Để cặp dưới bàn nhé." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 27, en: "Put your bag next to your chair.", ipa: "/pʊt jʊr bæɡ nɛkst tə jʊr tʃɛr/", vi: "Để cặp bên cạnh ghế nhé." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 28, en: "Put your phone away.", ipa: "/pʊt jʊr foʊn əˈweɪ/", vi: "Cất điện thoại đi nhé." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 29, en: "Keep your phone in your bag.", ipa: "/kip jʊr foʊn ɪn jʊr bæɡ/", vi: "Để điện thoại trong cặp nhé." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 30, en: "We don't need that right now.", ipa: "/wi doʊnt nid ðæt raɪt naʊ/", vi: "Bây giờ chúng ta chưa cần cái đó." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 31, en: "Clear your desk, please.", ipa: "/klɪr jʊr dɛsk, pliz/", vi: "Dọn bàn gọn lại nhé." },
+      { u: 3, sec: "4. Cất những đồ không cần thiết", num: 32, en: "Only keep your book and pencil on your desk.", ipa: "/ˈoʊnli kip jʊr bʊk ən ˈpɛnsəl ɑn jʊr dɛsk/", vi: "Chỉ để sách và bút chì trên bàn thôi nhé." },
+
+      // 5: Yêu cầu lớp yên lặng và tập trung (33-42)
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 33, en: "Quiet, please.", ipa: "/ˈkwaɪət, pliz/", vi: "Cả lớp yên lặng nhé." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 34, en: "Everyone, settle down.", ipa: "/ˈɛvriˌwʌn, ˈsɛtəl daʊn/", vi: "Cả lớp ổn định nào." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 35, en: "Let's settle down.", ipa: "/lɛts ˈsɛtəl daʊn/", vi: "Chúng ta ổn định nào." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 36, en: "Eyes on me, please.", ipa: "/aɪz ɑn mi, pliz/", vi: "Nhìn cô/thầy nhé." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 37, en: "Look this way, please.", ipa: "/lʊk ðɪs weɪ, pliz/", vi: "Nhìn về phía này nhé." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 38, en: "Listen carefully.", ipa: "/ˈlɪsən ˈkɛrfəli/", vi: "Lắng nghe thật kỹ nhé." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 39, en: "Please pay attention.", ipa: "/pliz peɪ əˈtɛnʃən/", vi: "Hãy chú ý nhé." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 40, en: "I need everyone's attention.", ipa: "/aɪ nid ˈɛvriˌwʌnz əˈtɛnʃən/", vi: "Cô/thầy cần cả lớp chú ý." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 41, en: "Stop talking and listen, please.", ipa: "/stɑp ˈtɔkɪŋ ən ˈlɪsən, pliz/", vi: "Ngừng nói chuyện và lắng nghe nhé." },
+      { u: 3, sec: "5. Yêu cầu lớp yên lặng và tập trung", num: 42, en: "Let's focus.", ipa: "/lɛts ˈfoʊkəs/", vi: "Chúng ta tập trung nào." },
+
+      // 6: Kiểm tra xem học sinh đã sẵn sàng chưa (43-50)
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 43, en: "Are you ready?", ipa: "/ɑr ju ˈrɛdi/", vi: "Các em sẵn sàng chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 44, en: "Is everyone ready?", ipa: "/ɪz ˈɛvriˌwʌn ˈrɛdi/", vi: "Cả lớp sẵn sàng chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 45, en: "Are we ready to start?", ipa: "/ɑr wi ˈrɛdi tə stɑrt/", vi: "Chúng ta sẵn sàng bắt đầu chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 46, en: "Do you have everything you need?", ipa: "/du ju hæv ˈɛvriˌθɪŋ ju nid/", vi: "Các em có đủ đồ cần thiết chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 47, en: "Everyone ready to go?", ipa: "/ˈɛvriˌwʌn ˈrɛdi tə ɡoʊ/", vi: "Cả lớp sẵn sàng chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 48, en: "All set?", ipa: "/ɔl sɛt/", vi: "Xong hết chưa? / Sẵn sàng chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 49, en: "Ready to begin?", ipa: "/ˈrɛdi tə bɪˈɡɪn/", vi: "Sẵn sàng bắt đầu chưa?" },
+      { u: 3, sec: "6. Kiểm tra xem học sinh đã sẵn sàng chưa", num: 50, en: "Okay, let's get started.", ipa: "/oʊˈkeɪ, lɛts ɡɛt ˈstɑrtɪd/", vi: "Được rồi, chúng ta bắt đầu nhé." },
+
+      // 7: Khi một vài học sinh vẫn chưa sẵn sàng (51-58)
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 51, en: "We're waiting for you.", ipa: "/wɪr ˈweɪtɪŋ fər ju/", vi: "Cả lớp đang chờ em đấy." },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 52, en: "Please get ready.", ipa: "/pliz ɡɛt ˈrɛdi/", vi: "Chuẩn bị nhanh nhé." },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 53, en: "Finish getting ready, please.", ipa: "/ˈfɪnɪʃ ˈɡɛtɪŋ ˈrɛdi, pliz/", vi: "Hoàn tất việc chuẩn bị nhé." },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 54, en: "You need your book out.", ipa: "/ju nid jʊr bʊk aʊt/", vi: "Em cần lấy sách ra nhé." },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 55, en: "Where's your notebook?", ipa: "/wɛrz jʊr ˈnoʊtˌbʊk/", vi: "Vở của em đâu?" },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 56, en: "Please put that away and get ready.", ipa: "/pliz pʊt ðæt əˈweɪ ən ɡɛt ˈrɛdi/", vi: "Cất cái đó đi và chuẩn bị học nhé." },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 57, en: "Join us when you're ready.", ipa: "/dʒɔɪn ʌs wɛn jʊr ˈrɛdi/", vi: "Khi sẵn sàng thì tham gia cùng cả lớp nhé." },
+      { u: 3, sec: "7. Khi một vài học sinh vẫn chưa sẵn sàng", num: 58, en: "Let's get ready a little faster.", ipa: "/lɛts ɡɛt ˈrɛdi ə ˈlɪtəl ˈfæstər/", vi: "Chúng ta chuẩn bị nhanh hơn một chút nhé." },
+
+      // ================= UNIT 4 (68 câu: #1 -> #68) =================
+      // 1: Hỏi và nói về ngày, tháng (1-10)
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 1, en: "What day is it today?", ipa: "/wʌt deɪ ɪz ɪt təˈdeɪ/", vi: "Hôm nay là thứ mấy?" },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 2, en: "Today is Monday.", ipa: "/təˈdeɪ ɪz ˈmʌndeɪ/", vi: "Hôm nay là thứ Hai." },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 3, en: "What's the date today?", ipa: "/wʌts ðə deɪt təˈdeɪ/", vi: "Hôm nay là ngày bao nhiêu?" },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 4, en: "Today is September 29th.", ipa: "/təˈdeɪ ɪz sɛpˈtɛmbər ˌtwɛnti ˈnaɪnθ/", vi: "Hôm nay là ngày 29 tháng 9." },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 5, en: "What month is it?", ipa: "/wʌt mʌnθ ɪz ɪt/", vi: "Bây giờ là tháng mấy?" },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 6, en: "It's September.", ipa: "/ɪts sɛpˈtɛmbər/", vi: "Bây giờ là tháng 9." },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 7, en: "What year is it?", ipa: "/wʌt jɪr ɪz ɪt/", vi: "Bây giờ là năm bao nhiêu?" },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 8, en: "It's twenty twenty-six.", ipa: "/ɪts ˈtwɛnti ˈtwɛnti ˈsɪks/", vi: "Bây giờ là năm 2026." },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 9, en: "Who can tell me the date?", ipa: "/hu kən tɛl mi ðə deɪt/", vi: "Ai có thể cho cô/thầy biết hôm nay là ngày bao nhiêu?" },
+      { u: 4, sec: "1. Hỏi và nói về ngày, tháng", num: 10, en: "Let's write the date on the board.", ipa: "/lɛts raɪt ðə deɪt ɑn ðə bɔrd/", vi: "Chúng ta cùng viết ngày tháng lên bảng nhé." },
+
+      // 2: Hỏi và nói về thời tiết (11-20)
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 11, en: "What's the weather like today?", ipa: "/wʌts ðə ˈwɛðər laɪk təˈdeɪ/", vi: "Thời tiết hôm nay thế nào?" },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 12, en: "How's the weather today?", ipa: "/haʊz ðə ˈwɛðər təˈdeɪ/", vi: "Hôm nay thời tiết thế nào?" },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 13, en: "Is it sunny today?", ipa: "/ɪz ɪt ˈsʌni təˈdeɪ/", vi: "Hôm nay trời có nắng không?" },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 14, en: "Is it raining outside?", ipa: "/ɪz ɪt ˈreɪnɪŋ ˌaʊtˈsaɪd/", vi: "Ngoài trời có đang mưa không?" },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 15, en: "Is it hot or cold today?", ipa: "/ɪz ɪt hɑt ɔr koʊld təˈdeɪ/", vi: "Hôm nay trời nóng hay lạnh?" },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 16, en: "It's sunny today.", ipa: "/ɪts ˈsʌni təˈdeɪ/", vi: "Hôm nay trời nắng." },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 17, en: "It's cloudy.", ipa: "/ɪts ˈklaʊdi/", vi: "Trời nhiều mây." },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 18, en: "It's raining.", ipa: "/ɪts ˈreɪnɪŋ/", vi: "Trời đang mưa." },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 19, en: "It's a beautiful day today.", ipa: "/ɪts ə ˈbjutəfəl deɪ təˈdeɪ/", vi: "Hôm nay là một ngày đẹp trời." },
+      { u: 4, sec: "2. Hỏi và nói về thời tiết", num: 20, en: "It looks like it's going to rain.", ipa: "/ɪt lʊks laɪk ɪts ˈɡoʊɪŋ tə reɪn/", vi: "Có vẻ trời sắp mưa." },
+
+      // 3: Nói về lịch học và kế hoạch trong ngày (21-30)
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 21, en: "What do we have today?", ipa: "/wʌt du wi hæv təˈdeɪ/", vi: "Hôm nay chúng ta học gì?" },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 22, en: "What's on our schedule today?", ipa: "/wʌts ɑn aʊər ˈskɛdʒuːl təˈdeɪ/", vi: "Hôm nay lịch của chúng ta có gì?" },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 23, en: "Today, we're going to learn about animals.", ipa: "/təˈdeɪ wɪr ˈɡoʊɪŋ tə lɜrn əˈbaʊt ˈænəməlz/", vi: "Hôm nay chúng ta sẽ học về động vật." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 24, en: "First, we'll review yesterday's lesson.", ipa: "/fɜrst wɪl rɪˈvju ˈjɛstərdeɪz ˈlɛsən/", vi: "Đầu tiên, chúng ta sẽ ôn lại bài hôm qua." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 25, en: "Then, we'll learn something new.", ipa: "/ðɛn wɪl lɜrn ˈsʌmθɪŋ nu/", vi: "Sau đó, chúng ta sẽ học nội dung mới." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 26, en: "After that, we'll do an activity.", ipa: "/ˈæftər ðæt wɪl du ən ækˈtɪvəti/", vi: "Sau đó nữa, chúng ta sẽ làm một hoạt động." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 27, en: "We have three activities today.", ipa: "/wi hæv θri ækˈtɪvətiz təˈdeɪ/", vi: "Hôm nay chúng ta có ba hoạt động." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 28, en: "We'll start with a quick review.", ipa: "/wɪl stɑrt wɪð ə kwɪk rɪˈvju/", vi: "Chúng ta sẽ bắt đầu bằng phần ôn nhanh." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 29, en: "We have a lot to do today.", ipa: "/wi hæv ə lɑt tə du təˈdeɪ/", vi: "Hôm nay chúng ta có khá nhiều việc phải làm." },
+      { u: 4, sec: "3. Nói về lịch học và kế hoạch trong ngày", num: 30, en: "Let's look at today's plan.", ipa: "/lɛts lʊk æt təˈdeɪz plæn/", vi: "Chúng ta xem kế hoạch hôm nay nhé." },
+
+      // 4: Kiểm tra bài cũ (31-40)
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 31, en: "Let's review what we learned yesterday.", ipa: "/lɛts rɪˈvju wʌt wi lɜrnd ˈjɛstərdeɪ/", vi: "Chúng ta cùng ôn lại những gì đã học hôm qua nhé." },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 32, en: "What did we learn yesterday?", ipa: "/wʌt dɪd wi lɜrn ˈjɛstərdeɪ/", vi: "Hôm qua chúng ta đã học gì?" },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 33, en: "Who remembers yesterday's lesson?", ipa: "/hu rɪˈmɛmbərz ˈjɛstərdeɪz ˈlɛsən/", vi: "Ai còn nhớ bài học hôm qua?" },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 34, en: "Can anyone remember what we talked about?", ipa: "/kən ˈɛniˌwʌn rɪˈmɛmbər wʌt wi tɔkt əˈbaʊt/", vi: "Có ai nhớ chúng ta đã nói về điều gì không?" },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 35, en: "What was the main idea?", ipa: "/wʌt wəz ðə meɪn aɪˈdiə/", vi: "Ý chính là gì?" },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 36, en: "Can you give me an example?", ipa: "/kən ju ɡɪv mi ən ɪɡˈzæmpəl/", vi: "Em có thể cho cô/thầy một ví dụ không?" },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 37, en: "What do you remember from last class?", ipa: "/wʌt du ju rɪˈmɛmbər frʌm læst klæs/", vi: "Em nhớ gì từ buổi học trước?" },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 38, en: "Let's do a quick review.", ipa: "/lɛts du ə kwɪk rɪˈvju/", vi: "Chúng ta ôn nhanh nhé." },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 39, en: "I'm going to ask you a few questions.", ipa: "/aɪm ˈɡoʊɪŋ tə æsk ju ə fju ˈkwɛstʃənz/", vi: "Cô/thầy sẽ hỏi các em vài câu." },
+      { u: 4, sec: "4. Kiểm tra bài cũ", num: 40, en: "Let's see how much you remember.", ipa: "/lɛts si haʊ mʌtʃ ju rɪˈmɛmbər/", vi: "Xem các em còn nhớ được bao nhiêu nhé." },
+
+      // 5: Hỏi về ngày hôm qua (41-48)
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 41, en: "How was your day yesterday?", ipa: "/haʊ wəz jʊr deɪ ˈjɛstərdeɪ/", vi: "Hôm qua của em thế nào?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 42, en: "What did you do yesterday?", ipa: "/wʌt dɪd ju du ˈjɛstərdeɪ/", vi: "Hôm qua em đã làm gì?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 43, en: "Did you do anything fun yesterday?", ipa: "/dɪd ju du ˈɛniˌθɪŋ fʌn ˈjɛstərdeɪ/", vi: "Hôm qua em có làm gì vui không?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 44, en: "Where did you go yesterday?", ipa: "/wɛr dɪd ju ɡoʊ ˈjɛstərdeɪ/", vi: "Hôm qua em đã đi đâu?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 45, en: "Who did you spend time with?", ipa: "/hu dɪd ju spɛnd taɪm wɪð/", vi: "Em đã dành thời gian với ai?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 46, en: "What was the best part of your day?", ipa: "/wʌt wəz ðə bɛst pɑrt əv jʊr deɪ/", vi: "Phần vui nhất trong ngày hôm qua của em là gì?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 47, en: "Did anything interesting happen?", ipa: "/dɪd ˈɛniˌθɪŋ ˈɪntrəstɪŋ ˈhæpən/", vi: "Có chuyện gì thú vị xảy ra không?" },
+      { u: 4, sec: "5. Hỏi về ngày hôm qua", num: 48, en: "Tell us one thing you did yesterday.", ipa: "/tɛl ʌs wʌn θɪŋ ju dɪd ˈjɛstərdeɪ/", vi: "Hãy kể cho cả lớp một việc em đã làm hôm qua." },
+
+      // 6: Hỏi về cuối tuần (49-58)
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 49, en: "How was your weekend?", ipa: "/haʊ wəz jʊr ˈwikˌɛnd/", vi: "Cuối tuần của em thế nào?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 50, en: "Did you have a good weekend?", ipa: "/dɪd ju hæv ə ɡʊd ˈwikˌɛnd/", vi: "Cuối tuần của em vui không?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 51, en: "What did you do this weekend?", ipa: "/wʌt dɪd ju du ðɪs ˈwikˌɛnd/", vi: "Cuối tuần em đã làm gì?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 52, en: "Did you go anywhere?", ipa: "/dɪd ju ɡoʊ ˈɛniˌwɛr/", vi: "Em có đi đâu không?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 53, en: "Did you stay home?", ipa: "/dɪd ju steɪ hoʊm/", vi: "Em có ở nhà không?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 54, en: "Who did you spend the weekend with?", ipa: "/hu dɪd ju spɛnd ðə ˈwikˌɛnd wɪð/", vi: "Em đã dành cuối tuần với ai?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 55, en: "What was your favorite part of the weekend?", ipa: "/wʌt wəz jʊr ˈfeɪvərɪt pɑrt əv ðə ˈwikˌɛnd/", vi: "Điều em thích nhất trong cuối tuần là gì?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 56, en: "Did you do anything special?", ipa: "/dɪd ju du ˈɛniˌθɪŋ ˈspɛʃəl/", vi: "Em có làm gì đặc biệt không?" },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 57, en: "Tell your partner about your weekend.", ipa: "/tɛl jʊr ˈpɑrtnər əˈbaʊt jʊr ˈwikˌɛnd/", vi: "Kể cho bạn bên cạnh về cuối tuần của em nhé." },
+      { u: 4, sec: "6. Hỏi về cuối tuần", num: 58, en: "Who wants to share first?", ipa: "/hu wɑnts tə ʃɛr fɜrst/", vi: "Ai muốn chia sẻ trước?" },
+
+      // 7: Câu hỏi follow-up để kéo dài tương tác (59-68)
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 59, en: "Really?", ipa: "/ˈrɪəli/", vi: "Thật à?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 60, en: "And then what happened?", ipa: "/ən ðɛn wʌt ˈhæpənd/", vi: "Rồi sau đó chuyện gì xảy ra?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 61, en: "Who did you go with?", ipa: "/hu dɪd ju ɡoʊ wɪð/", vi: "Em đi cùng ai?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 62, en: "Where did you go?", ipa: "/wɛr dɪd ju ɡoʊ/", vi: "Em đã đi đâu?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 63, en: "What did you do there?", ipa: "/wʌt dɪd ju du ðɛr/", vi: "Em đã làm gì ở đó?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 64, en: "Did you enjoy it?", ipa: "/dɪd ju ɪnˈdʒɔɪ ɪt/", vi: "Em có thích không?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 65, en: "Why did you like it?", ipa: "/waɪ dɪd ju laɪk ɪt/", vi: "Tại sao em thích nó?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 66, en: "How did you feel?", ipa: "/haʊ dɪd ju fil/", vi: "Em cảm thấy thế nào?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 67, en: "What about you, Mai?", ipa: "/wʌt əˈbaʊt ju, maɪ/", vi: "Còn em thì sao, Mai?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." },
+      { u: 4, sec: "7. Câu hỏi follow-up để kéo dài tương tác", num: 68, en: "Does anyone have a similar answer?", ipa: "/dʌz ˈɛniˌwʌn hæv ə ˈsɪmələr ˈænsər/", vi: "Có ai có câu trả lời tương tự không?", note: "Nhóm rất quan trọng vì giáo viên thường hỏi được câu đầu nhưng sau đó không biết hỏi tiếp gì." }
+    ];
+
+    const SENTENCES = RAW_SENTENCES.map((item, idx) => ({
+      id: idx + 1,
+      ...item
+    }));
+
+    // =========================================================================
+    // 2. QUẢN LÝ TIẾN ĐỘ (LOCALSTORAGE) & ÂM THANH (WEB AUDIO API)
+    // =========================================================================
+    const STORAGE_KEY = "uspeak_p1_progress_v1";
+    const SOUND_KEY = "uspeak_p1_sound_v1";
+
+    let progressData = loadProgress();
+    let soundEnabled = localStorage.getItem(SOUND_KEY) !== "false";
+    let audioCtx = null;
+
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+      updateTopStats();
+    }
+
+    function getItemProgress(id) {
+      return progressData[id] || { mastered: false, wrong: false, streak: 0, attempts: 0 };
+    }
+
+    function recordAnswer(id, isCorrect) {
+      const p = getItemProgress(id);
+      p.attempts = (p.attempts || 0) + 1;
+      if (isCorrect) {
+        p.streak = (p.streak || 0) + 1;
+        p.wrong = false;
+        if (p.streak >= 2) p.mastered = true;
+      } else {
+        p.streak = 0;
+        p.wrong = true;
+        p.mastered = false;
+      }
+      progressData[id] = p;
+      saveProgress();
+    }
+
+    function toggleMastered(id) {
+      const p = getItemProgress(id);
+      p.mastered = !p.mastered;
+      if (p.mastered) p.wrong = false;
+      progressData[id] = p;
+      saveProgress();
+    }
+
+    function resetProgress() {
+      if (!confirm("Bạn có chắc muốn xóa toàn bộ tiến độ học tập (222 câu) để bắt đầu lại không?")) return;
+      progressData = {};
+      saveProgress();
+      renderWorkspace();
+    }
+
+    function updateTopStats() {
+      let mastered = 0;
+      let wrong = 0;
+      for (const s of SENTENCES) {
+        const p = getItemProgress(s.id);
+        if (p.mastered) mastered++;
+        if (p.wrong) wrong++;
+      }
+      document.getElementById("totalCount").textContent = SENTENCES.length;
+      document.getElementById("masteredCount").textContent = mastered;
+      document.getElementById("reviewCount").textContent = wrong;
+      const pct = Math.round((mastered / SENTENCES.length) * 100);
+      document.getElementById("globalProgressFill").style.width = pct + "%";
+    }
+
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) audioCtx = new Ctx();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      if (type === "correct") {
+        // Hợp âm vui nhộn, bất ngờ (C5 - E5 - G5 - C6)
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = i === notes.length - 1 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(freq, now + i * 0.065);
+          gain.gain.setValueAtTime(0.001, now + i * 0.065);
+          gain.gain.exponentialRampToValueAtTime(0.14, now + i * 0.065 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.065 + 0.24);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.065);
+          osc.stop(now + i * 0.065 + 0.26);
+        });
+      } else if (type === "wrong") {
+        // Âm báo sai nhẹ nhàng (E4 -> C4)
+        const notes = [329.63, 261.63];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + i * 0.11);
+          gain.gain.setValueAtTime(0.001, now + i * 0.11);
+          gain.gain.exponentialRampToValueAtTime(0.12, now + i * 0.11 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.11);
+          osc.stop(now + i * 0.11 + 0.22);
+        });
+      } else if (type === "finish") {
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.51];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + i * 0.09);
+          gain.gain.setValueAtTime(0.001, now + i * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.15, now + i * 0.09 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.09);
+          osc.stop(now + i * 0.09 + 0.38);
+        });
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem(SOUND_KEY, String(soundEnabled));
+      updateSoundBtn();
+      if (soundEnabled) playSound("correct");
+    }
+
+    function updateSoundBtn() {
+      const btn = document.getElementById("soundToggleBtn");
+      btn.textContent = soundEnabled ? "🔊 Âm thanh: Bật" : "🔇 Âm thanh: Tắt";
+      btn.classList.toggle("muted", !soundEnabled);
+    }
+
+    // =========================================================================
+    // 3. WEB SPEECH API (PHÁT ÂM BẢN XỨ & NHẬN DIỆN GIỌNG NÓI)
+    // =========================================================================
+    let speechRate = 0.95;
+
+    function speakText(text, customRate) {
+      if (!("speechSynthesis" in window)) {
+        alert("Trình duyệt của bạn không hỗ trợ phát âm Web Speech API.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-US";
+      utter.rate = customRate || speechRate;
+
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => v.lang === "en-US" && /natural|google|samantha|aria|jenny|microsoft/i.test(v.name))
+        || voices.find(v => v.lang === "en-US")
+        || voices.find(v => v.lang.startsWith("en"));
+      if (preferred) utter.voice = preferred;
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+
+    // =========================================================================
+    // 4. TRẠNG THÁI ỨNG DỤNG & BỘ LỌC DỮ LIỆU
+    // =========================================================================
+    const state = {
+      tab: "reading", // reading | listening | speaking | writing | library
+      unitFilter: "all",
+      sectionFilter: "all",
+      statusFilter: "all",
+      searchQuery: "",
+
+      // Submodes
+      readingMode: "en2vi", // en2vi | vi2en | situation
+      listeningMode: "mc", // mc | cloze
+      writingMode: "build", // build | type
+
+      // Active Session Deck
+      deck: [],
+      index: 0,
+      score: 0,
+      answered: false,
+      selectedOptIndex: null,
+      currentOptions: [],
+      lastIsCorrect: false,
+
+      // Cloze state
+      clozeTarget: "",
+      clozeBefore: "",
+      clozeAfter: "",
+
+      // Writing build state
+      wordTokens: [], // { text, idx }
+      pickedIndices: [],
+
+      // Speaking state
+      isRecording: false,
+      spokenTranscript: "",
+      speakingResult: null
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function getFilteredPool() {
+      return SENTENCES.filter(s => {
+        if (state.unitFilter !== "all" && String(s.u) !== state.unitFilter) return false;
+        if (state.sectionFilter !== "all" && s.sec !== state.sectionFilter) return false;
+        const p = getItemProgress(s.id);
+        if (state.statusFilter === "mastered" && !p.mastered) return false;
+        if (state.statusFilter === "unmastered" && p.mastered) return false;
+        if (state.statusFilter === "wrong" && !p.wrong) return false;
+        return true;
+      });
+    }
+
+    function populateSectionDropdown() {
+      const sel = document.getElementById("sectionFilter");
+      const currentUnit = state.unitFilter;
+      const relevant = currentUnit === "all" ? SENTENCES : SENTENCES.filter(s => String(s.u) === currentUnit);
+      const uniqueSecs = [...new Set(relevant.map(s => s.sec))];
+
+      sel.innerHTML = `<option value="all">Tất cả tình huống (${uniqueSecs.length})</option>`;
+      uniqueSecs.forEach(sec => {
+        const opt = document.createElement("option");
+        opt.value = sec;
+        opt.textContent = sec;
+        sel.appendChild(opt);
+      });
+      state.sectionFilter = "all";
+      sel.value = "all";
+    }
+
+    function onUnitChange() {
+      state.unitFilter = document.getElementById("unitFilter").value;
+      populateSectionDropdown();
+      onFilterChange();
+    }
+
+    function onFilterChange() {
+      state.sectionFilter = document.getElementById("sectionFilter").value;
+      state.statusFilter = document.getElementById("statusFilter").value;
+      rebuildDeck();
+      renderWorkspace();
+    }
+
+    function switchTab(tab) {
+      stopRecordingIfAny();
+      state.tab = tab;
+      document.querySelectorAll(".nav-tab").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tab);
+      });
+      rebuildDeck();
+      renderWorkspace();
+    }
+
+    function restartCurrentMode() {
+      stopRecordingIfAny();
+      rebuildDeck();
+      renderWorkspace();
+    }
+
+    function rebuildDeck() {
+      const pool = getFilteredPool();
+      document.getElementById("poolBadge").textContent = `Đang chọn: ${pool.length} câu`;
+      state.deck = shuffleArray(pool);
+      state.index = 0;
+      state.score = 0;
+      prepareQuestionState();
+    }
+
+    function prepareQuestionState() {
+      state.answered = false;
+      state.selectedOptIndex = null;
+      state.lastIsCorrect = false;
+      state.spokenTranscript = "";
+      state.speakingResult = null;
+
+      const item = state.deck[state.index];
+      if (!item) return;
+
+      // Chuẩn bị đáp án trắc nghiệm (đảm bảo không trùng nghĩa/câu)
+      if (state.tab === "reading" || (state.tab === "listening" && state.listeningMode === "mc")) {
+        const distractorsPool = shuffleArray(
+          SENTENCES.filter(s => s.id !== item.id && s.vi !== item.vi && s.en !== item.en)
+        );
+        const distractors = [];
+        const seenVals = new Set();
+        const keyField = (state.tab === "reading" && state.readingMode === "en2vi") ? "vi"
+          : (state.tab === "reading" && state.readingMode === "situation") ? "sec" : "en";
+
+        seenVals.add(item[keyField]);
+        for (const cand of distractorsPool) {
+          if (!seenVals.has(cand[keyField])) {
+            seenVals.add(cand[keyField]);
+            distractors.push(cand);
+          }
+          if (distractors.length === 3) break;
+        }
+        state.currentOptions = shuffleArray([item, ...distractors]);
+      }
+
+      // Chuẩn bị Listening Cloze
+      if (state.tab === "listening" && state.listeningMode === "cloze") {
+        const words = item.en.split(" ");
+        // Chọn từ có ít nhất 2 chữ cái để ẩn
+        const candidates = words
+          .map((w, i) => ({ raw: w, clean: w.replace(/^[^a-zA-Z0-9']+|[^a-zA-Z0-9']+$/g, ""), i }))
+          .filter(x => x.clean.length >= 2);
+        const picked = candidates.length > 0
+          ? candidates[Math.floor(Math.random() * candidates.length)]
+          : { raw: words[words.length - 1], clean: words[words.length - 1].replace(/[^a-zA-Z0-9']/g, ""), i: words.length - 1 };
+
+        const leadingPunct = picked.raw.match(/^[^a-zA-Z0-9']*/)?.[0] || "";
+        const trailingPunct = picked.raw.match(/[^a-zA-Z0-9']*$/)?.[0] || "";
+        state.clozeTarget = picked.clean;
+        const beforeParts = words.slice(0, picked.i);
+        const afterParts = words.slice(picked.i + 1);
+        state.clozeBefore = (beforeParts.length ? beforeParts.join(" ") + " " : "") + leadingPunct;
+        state.clozeAfter = trailingPunct + (afterParts.length ? " " + afterParts.join(" ") : "");
+      }
+
+      // Chuẩn bị Writing Build
+      if (state.tab === "writing" && state.writingMode === "build") {
+        const tokens = item.en.split(" ").map((w, idx) => ({ text: w, idx }));
+        state.wordTokens = shuffleArray(tokens);
+        // Tránh trường hợp trộn ra đúng hệt thứ tự gốc nếu câu có >= 3 từ
+        if (tokens.length >= 3 && state.wordTokens.every((t, i) => t.idx === i)) {
+          state.wordTokens = shuffleArray(tokens);
+        }
+        state.pickedIndices = [];
+      }
+    }
+
+    function nextQuestion() {
+      if (state.index < state.deck.length - 1) {
+        state.index++;
+        prepareQuestionState();
+        renderWorkspace();
+      } else {
+        state.index = state.deck.length; // Finished screen
+        playSound("finish");
+        renderWorkspace();
+      }
+    }
+
+    // =========================================================================
+    // 5. RENDER GIAO DIỆN TỪNG MODULE
+    // =========================================================================
+    function renderWorkspace() {
+      const ws = document.getElementById("workspace");
+      if (state.tab === "library") {
+        renderLibrary(ws);
+        return;
+      }
+
+      if (state.deck.length === 0) {
+        ws.innerHTML = `
+          <div class="empty-state">
+            <h3>Không có mẫu câu nào phù hợp với bộ lọc hiện tại</h3>
+            <p style="margin: 8px 0 16px;">Hãy thử chuyển trạng thái về "Tất cả trạng thái" hoặc chọn Unit khác.</p>
+            <button class="btn btn-primary" onclick="resetFilters()">Hiển thị toàn bộ 222 câu</button>
+          </div>
+        `;
+        return;
+      }
+
+      if (state.index >= state.deck.length) {
+        const pct = Math.round((state.score / state.deck.length) * 100);
+        ws.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 2.5rem; margin-bottom: 10px;">🎉</div>
+            <h2>Hoàn thành lượt luyện tập!</h2>
+            <p style="margin: 8px 0 18px; font-size: 1rem;">
+              Bạn đạt <strong>${state.score} / ${state.deck.length}</strong> câu (${pct}%).
+            </p>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="restartCurrentMode()">🔀 Trộn &amp; Luyện lại</button>
+              <button class="btn btn-outline" onclick="filterWrongOnly()">🎯 Ôn các câu làm sai</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (state.tab === "reading") renderReading(ws);
+      else if (state.tab === "listening") renderListening(ws);
+      else if (state.tab === "speaking") renderSpeaking(ws);
+      else if (state.tab === "writing") renderWriting(ws);
+    }
+
+    function resetFilters() {
+      document.getElementById("unitFilter").value = "all";
+      state.unitFilter = "all";
+      populateSectionDropdown();
+      document.getElementById("statusFilter").value = "all";
+      state.statusFilter = "all";
+      rebuildDeck();
+      renderWorkspace();
+    }
+
+    function filterWrongOnly() {
+      document.getElementById("statusFilter").value = "wrong";
+      state.statusFilter = "wrong";
+      rebuildDeck();
+      renderWorkspace();
+    }
+
+    function renderQuizMeta(item) {
+      const p = getItemProgress(item.id);
+      return `
+        <div class="quiz-meta">
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <span class="badge badge-navy">Câu ${state.index + 1} / ${state.deck.length}</span>
+            <span class="badge badge-slate">Unit ${item.u} • #${item.num}</span>
+            ${p.mastered ? `<span class="badge badge-green">✓ Đã thuộc</span>` : ""}
+            ${p.wrong ? `<span class="badge badge-red">! Cần ôn</span>` : ""}
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="badge badge-slate">Điểm lượt này: ${state.score}</span>
+            <button class="btn btn-outline btn-sm" onclick="toggleMasteredCurrent(${item.id})">
+              ${p.mastered ? "Bỏ đánh dấu thuộc" : "✓ Đánh dấu đã thuộc"}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleMasteredCurrent(id) {
+      toggleMastered(id);
+      renderWorkspace();
+    }
+
+    // ---------------- MODULE 1: ĐỌC HIỂU (READING) ----------------
+    function renderReading(ws) {
+      const item = state.deck[state.index];
+      const letters = ["A", "B", "C", "D"];
+
+      let promptLabel = "Chọn nghĩa tiếng Việt chuẩn xác";
+      let promptMain = item.en;
+      let promptSub = item.ipa;
+      let contextLine = `<div style="margin-top:6px; font-size:0.82rem; color:var(--slate-500);">Ngữ cảnh: ${item.sec}</div>`;
+
+      if (state.readingMode === "vi2en") {
+        promptLabel = "Chọn mẫu câu tiếng Anh tương ứng";
+        promptMain = item.vi;
+        promptSub = "";
+      } else if (state.readingMode === "situation") {
+        promptLabel = "Mẫu câu này dùng trong tình huống giao tiếp nào?";
+        promptMain = item.en;
+        promptSub = item.ipa;
+        contextLine = "";
+      }
+
+      const optionsHtml = state.currentOptions.map((opt, i) => {
+        const text = state.readingMode === "en2vi" ? opt.vi
+          : state.readingMode === "vi2en" ? opt.en
+          : opt.sec;
+
+        let cls = "option-btn";
+        if (state.answered) {
+          if (opt.id === item.id) cls += " correct";
+          else if (i === state.selectedOptIndex) cls += " wrong";
+        }
+        return `
+          <button class="${cls}" ${state.answered ? "disabled" : ""} onclick="handleReadingSelect(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${escapeHtml(text)}</span>
+          </button>
+        `;
+      }).join("");
+
+      ws.innerHTML = `
+        <div class="module-header">
+          <div>
+            <div class="module-title">📖 Kỹ năng Đọc hiểu (Reading &amp; Comprehension)</div>
+            <div class="module-subtitle">Bấm chọn đáp án để nhận phản hồi tức thì và giải thích chi tiết</div>
+          </div>
+          <div class="submode-pills">
+            <button class="submode-pill ${state.readingMode === "en2vi" ? "active" : ""}" onclick="setReadingMode('en2vi')">Anh → Việt</button>
+            <button class="submode-pill ${state.readingMode === "vi2en" ? "active" : ""}" onclick="setReadingMode('vi2en')">Việt → Anh</button>
+            <button class="submode-pill ${state.readingMode === "situation" ? "active" : ""}" onclick="setReadingMode('situation')">Tình huống lớp học</button>
+          </div>
+        </div>
+
+        ${renderQuizMeta(item)}
+
+        ${item.note ? `<div class="note-banner">💡 <strong>Lưu ý trong sách:</strong> ${escapeHtml(item.note)}</div>` : ""}
+
+        <div class="prompt-box">
+          <div class="prompt-label">${promptLabel}</div>
+          <div class="prompt-main">${escapeHtml(promptMain)}</div>
+          ${promptSub ? `<div class="prompt-ipa">${escapeHtml(promptSub)}</div>` : ""}
+          ${contextLine}
+          ${state.readingMode !== "vi2en" ? `
+            <div style="margin-top:10px;">
+              <button class="btn btn-outline btn-sm" onclick="speakText(${JSON.stringify(item.en)})">🔊 Nghe phát âm</button>
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="options-grid">${optionsHtml}</div>
+
+        ${state.answered ? renderFeedbackBanner(item, state.lastIsCorrect) : ""}
+      `;
+    }
+
+    function setReadingMode(mode) {
+      state.readingMode = mode;
+      prepareQuestionState();
+      renderWorkspace();
+    }
+
+    function handleReadingSelect(optIndex) {
+      if (state.answered) return;
+      const item = state.deck[state.index];
+      const chosen = state.currentOptions[optIndex];
+      const isCorrect = chosen.id === item.id;
+
+      state.answered = true;
+      state.selectedOptIndex = optIndex;
+      state.lastIsCorrect = isCorrect;
+      if (isCorrect) state.score++;
+
+      recordAnswer(item.id, isCorrect);
+      playSound(isCorrect ? "correct" : "wrong");
+      renderWorkspace();
+    }
+
+    // ---------------- MODULE 2: NGHE & ĐIỀN TỪ (LISTENING & DICTATION) ----------------
+    function renderListening(ws) {
+      const item = state.deck[state.index];
+      const letters = ["A", "B", "C", "D"];
+
+      let bodyHtml = "";
+      if (state.listeningMode === "mc") {
+        const optionsHtml = state.currentOptions.map((opt, i) => {
+          let cls = "option-btn";
+          if (state.answered) {
+            if (opt.id === item.id) cls += " correct";
+            else if (i === state.selectedOptIndex) cls += " wrong";
+          }
+          return `
+            <button class="${cls}" ${state.answered ? "disabled" : ""} onclick="handleListeningMC(${i})">
+              <span class="option-letter">${letters[i]}</span>
+              <div>
+                <div style="font-weight:700;">${escapeHtml(opt.en)}</div>
+                ${state.answered ? `<div style="font-size:0.82rem; color:var(--slate-600);">${escapeHtml(opt.vi)}</div>` : ""}
+              </div>
+            </button>
+          `;
+        }).join("");
+
+        bodyHtml = `
+          <div class="prompt-box">
+            <div class="prompt-label">Nghe câu phát âm giọng bản xứ và chọn đáp án đúng</div>
+            <div class="audio-controls">
+              <button class="btn btn-primary" onclick="speakText(${JSON.stringify(item.en)})">🔊 Phát câu (Vừa)</button>
+              <button class="btn btn-outline" onclick="speakText(${JSON.stringify(item.en)}, 0.7)">🐢 Nghe chậm (0.7x)</button>
+            </div>
+            <div style="font-size:0.84rem; color:var(--slate-500);">Tình huống: ${escapeHtml(item.sec)}</div>
+          </div>
+          <div class="options-grid">${optionsHtml}</div>
+        `;
+      } else {
+        const inputCls = state.answered ? (state.lastIsCorrect ? "cloze-input ok" : "cloze-input bad") : "cloze-input";
+        bodyHtml = `
+          <div class="prompt-box">
+            <div class="prompt-label">Nghe câu và điền từ còn thiếu vào chỗ trống</div>
+            <div class="audio-controls">
+              <button class="btn btn-primary" onclick="speakText(${JSON.stringify(item.en)})">🔊 Phát câu (Vừa)</button>
+              <button class="btn btn-outline" onclick="speakText(${JSON.stringify(item.en)}, 0.7)">🐢 Nghe chậm (0.7x)</button>
+            </div>
+            <div class="cloze-sentence">
+              <span>${escapeHtml(state.clozeBefore)}</span>
+              <input id="clozeInput" class="${inputCls}" type="text" autocomplete="off" spellcheck="false"
+                placeholder="..." ${state.answered ? "disabled" : ""}
+                onkeydown="if(event.key==='Enter') checkClozeAnswer()" />
+              <span>${escapeHtml(state.clozeAfter)}</span>
+            </div>
+            <div style="font-size:0.88rem; color:var(--slate-600); margin-bottom:10px;">Nghĩa: ${escapeHtml(item.vi)}</div>
+            ${!state.answered ? `
+              <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="checkClozeAnswer()">Kiểm tra đáp án</button>
+                <button class="btn btn-outline" onclick="alert('Gợi ý chữ cái đầu: ${escapeHtml(state.clozeTarget[0])}... (${state.clozeTarget.length} chữ cái)\\nIPA: ${escapeHtml(item.ipa)}')">💡 Gợi ý</button>
+              </div>
+            ` : ""}
+          </div>
+        `;
+      }
+
+      ws.innerHTML = `
+        <div class="module-header">
+          <div>
+            <div class="module-title">🎧 Kỹ năng Nghe (Listening &amp; Dictation)</div>
+            <div class="module-subtitle">Luyện nghe phản xạ giọng Anh-Mỹ với tốc độ tùy chỉnh</div>
+          </div>
+          <div class="submode-pills">
+            <button class="submode-pill ${state.listeningMode === "mc" ? "active" : ""}" onclick="setListeningMode('mc')">Nghe &amp; Chọn câu</button>
+            <button class="submode-pill ${state.listeningMode === "cloze" ? "active" : ""}" onclick="setListeningMode('cloze')">Nghe &amp; Điền từ</button>
+          </div>
+        </div>
+
+        ${renderQuizMeta(item)}
+        ${bodyHtml}
+        ${state.answered ? renderFeedbackBanner(item, state.lastIsCorrect) : ""}
+      `;
+
+      if (state.listeningMode === "cloze" && !state.answered) {
+        const inp = document.getElementById("clozeInput");
+        if (inp) inp.focus();
+      }
+    }
+
+    function setListeningMode(mode) {
+      state.listeningMode = mode;
+      prepareQuestionState();
+      renderWorkspace();
+    }
+
+    function handleListeningMC(optIndex) {
+      if (state.answered) return;
+      const item = state.deck[state.index];
+      const chosen = state.currentOptions[optIndex];
+      const isCorrect = chosen.id === item.id;
+
+      state.answered = true;
+      state.selectedOptIndex = optIndex;
+      state.lastIsCorrect = isCorrect;
+      if (isCorrect) state.score++;
+
+      recordAnswer(item.id, isCorrect);
+      playSound(isCorrect ? "correct" : "wrong");
+      renderWorkspace();
+    }
+
+    function checkClozeAnswer() {
+      if (state.answered) return;
+      const inp = document.getElementById("clozeInput");
+      const val = (inp ? inp.value : "").trim();
+      if (!val) {
+        inp && inp.focus();
+        return;
+      }
+      const item = state.deck[state.index];
+      const normUser = val.toLowerCase().replace(/[^a-z0-9']/g, "");
+      const normTarget = state.clozeTarget.toLowerCase().replace(/[^a-z0-9']/g, "");
+      const isCorrect = normUser === normTarget;
+
+      state.answered = true;
+      state.lastIsCorrect = isCorrect;
+      if (isCorrect) state.score++;
+
+      recordAnswer(item.id, isCorrect);
+      playSound(isCorrect ? "correct" : "wrong");
+      renderWorkspace();
+      // Giữ lại giá trị người dùng đã nhập để đối chiếu
+      const newInp = document.getElementById("clozeInput");
+      if (newInp) newInp.value = val;
+    }
+
+    // ---------------- MODULE 3: NÓI & SHADOWING (SPEAKING) ----------------
+    let activeRecognition = null;
+
+    function stopRecordingIfAny() {
+      if (activeRecognition) {
+        try { activeRecognition.stop(); } catch (e) {}
+        activeRecognition = null;
+      }
+      state.isRecording = false;
+    }
+
+    function renderSpeaking(ws) {
+      const item = state.deck[state.index];
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const supported = Boolean(SpeechRec);
+
+      let diffHtml = "";
+      if (state.speakingResult) {
+        const res = state.speakingResult;
+        diffHtml = `
+          <div style="margin-top:16px; padding:14px; border-radius:10px; background:var(--white); border:1px solid var(--slate-200);">
+            <div style="font-size:0.85rem; color:var(--slate-500); margin-bottom:6px;">
+              Hệ thống nghe được: <strong>"${escapeHtml(state.spokenTranscript)}"</strong>
+            </div>
+            <div style="font-size:1rem; font-weight:700; color:${res.accuracy >= 75 ? "var(--emerald-600)" : "var(--amber-600)"};">
+              Độ chính xác: ${res.accuracy}% ${res.accuracy >= 75 ? "— Phát âm rất tốt! 🎉" : "— Thử đọc lại chậm và rõ hơn nhé!"}
+            </div>
+            <div class="word-diff">
+              ${res.words.map(w => `<span class="word-tag ${w.hit ? "hit" : "miss"}">${escapeHtml(w.word)}</span>`).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      ws.innerHTML = `
+        <div class="module-header">
+          <div>
+            <div class="module-title">🎙️ Kỹ năng Nói &amp; Đọc đuổi (Speaking &amp; Shadowing)</div>
+            <div class="module-subtitle">Nghe giọng mẫu bản xứ, sau đó bấm Micro để thu âm và kiểm tra độ chính xác từng từ</div>
+          </div>
+        </div>
+
+        ${renderQuizMeta(item)}
+
+        <div class="prompt-box">
+          <div class="prompt-label">${escapeHtml(item.sec)}</div>
+          <div class="prompt-main">${escapeHtml(item.en)}</div>
+          <div class="prompt-ipa">${escapeHtml(item.ipa)}</div>
+          <div style="margin-top:8px; font-size:0.98rem; color:var(--navy-900); font-weight:500;">${escapeHtml(item.vi)}</div>
+
+          <div class="audio-controls" style="margin-top:16px;">
+            <button class="btn btn-outline" onclick="speakText(${JSON.stringify(item.en)}, 0.95)">🔊 Nghe mẫu (Chuẩn)</button>
+            <button class="btn btn-outline" onclick="speakText(${JSON.stringify(item.en)}, 0.68)">🐢 Nghe chậm (Shadowing)</button>
+          </div>
+
+          <div style="margin-top:20px;">
+            ${supported ? `
+              <button class="mic-btn ${state.isRecording ? "recording" : ""}" onclick="toggleRecording()" title="Bấm để nói">
+                ${state.isRecording ? "⏹" : "🎙️"}
+              </button>
+              <div style="margin-top:8px; font-size:0.84rem; color:var(--slate-500);">
+                ${state.isRecording ? "Đang lắng nghe... Hãy đọc to rõ mẫu câu trên!" : "Bấm vào biểu tượng Micro để bắt đầu nói"}
+              </div>
+            ` : `
+              <div class="note-banner" style="max-width:560px; margin:12px auto;">
+                Trình duyệt hiện tại chưa hỗ trợ Web Speech Recognition (khuyên dùng Google Chrome / Microsoft Edge trên máy tính hoặc Android). Bạn vẫn có thể luyện Shadowing theo âm thanh mẫu và tự đánh giá bên dưới.
+              </div>
+              <button class="btn btn-success" onclick="markSpeakingSelf()">✓ Tôi đã đọc trôi chảy câu này</button>
+            `}
+          </div>
+
+          ${diffHtml}
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <button class="btn btn-outline" onclick="markSpeakingSelf()">✓ Đánh dấu đạt &amp; Sang câu tiếp</button>
+          <button class="btn btn-primary" onclick="nextQuestion()">Câu tiếp theo →</button>
+        </div>
+      `;
+    }
+
+    function toggleRecording() {
+      if (state.isRecording) {
+        stopRecordingIfAny();
+        renderWorkspace();
+        return;
+      }
+
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) return;
+
+      const rec = new SpeechRec();
+      rec.lang = "en-US";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      activeRecognition = rec;
+      state.isRecording = true;
+      renderWorkspace();
+
+      rec.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        state.spokenTranscript = transcript;
+        evaluateSpeaking(transcript);
+      };
+
+      rec.onerror = (e) => {
+        state.isRecording = false;
+        activeRecognition = null;
+        if (e.error === "not-allowed") {
+          alert("Vui lòng cấp quyền Micro cho trình duyệt để sử dụng tính năng kiểm tra phát âm.");
+        }
+        renderWorkspace();
+      };
+
+      rec.onend = () => {
+        state.isRecording = false;
+        activeRecognition = null;
+        renderWorkspace();
+      };
+
+      rec.start();
+    }
+
+    function normalizeWords(str) {
+      return str.toLowerCase().replace(/[^a-z0-9'\s]/g, "").trim().split(/\s+/).filter(Boolean);
+    }
+
+    function evaluateSpeaking(transcript) {
+      const item = state.deck[state.index];
+      const targetWordsRaw = item.en.split(/\s+/);
+      const targetClean = normalizeWords(item.en);
+      const spokenClean = normalizeWords(transcript);
+
+      let hits = 0;
+      const wordResults = targetWordsRaw.map((w, idx) => {
+        const clean = w.toLowerCase().replace(/[^a-z0-9']/g, "");
+        const hit = spokenClean.includes(clean);
+        if (hit) hits++;
+        return { word: w, hit };
+      });
+
+      const accuracy = Math.round((hits / Math.max(1, targetClean.length)) * 100);
+      state.speakingResult = { accuracy, words: wordResults };
+
+      const passed = accuracy >= 75;
+      if (passed && !state.answered) {
+        state.score++;
+        state.answered = true;
+      }
+      recordAnswer(item.id, passed);
+      playSound(passed ? "correct" : "wrong");
+      renderWorkspace();
+    }
+
+    function markSpeakingSelf() {
+      const item = state.deck[state.index];
+      if (!state.answered) {
+        state.score++;
+        state.answered = true;
+      }
+      recordAnswer(item.id, true);
+      playSound("correct");
+      nextQuestion();
+    }
+
+    // ---------------- MODULE 4: VIẾT & GHÉP CÂU (WRITING) ----------------
+    function renderWriting(ws) {
+      const item = state.deck[state.index];
+
+      let bodyHtml = "";
+      if (state.writingMode === "build") {
+        const builtSentence = state.pickedIndices.map(i => state.wordTokens[i].text).join(" ");
+        const builtChips = state.pickedIndices.map((tokenArrIdx, pos) => `
+          <button class="chip selected" ${state.answered ? "disabled" : ""} onclick="unpickWord(${pos})">
+            ${escapeHtml(state.wordTokens[tokenArrIdx].text)}
+          </button>
+        `).join("");
+
+        const poolChips = state.wordTokens.map((tok, arrIdx) => {
+          const isUsed = state.pickedIndices.includes(arrIdx);
+          return `
+            <button class="chip ${isUsed ? "used" : ""}" ${state.answered || isUsed ? "disabled" : ""} onclick="pickWord(${arrIdx})">
+              ${escapeHtml(tok.text)}
+            </button>
+          `;
+        }).join("");
+
+        bodyHtml = `
+          <div class="prompt-box">
+            <div class="prompt-label">Sắp xếp các từ bị xáo trộn thành câu tiếng Anh hoàn chỉnh</div>
+            <div class="prompt-main">${escapeHtml(item.vi)}</div>
+            <div style="font-size:0.84rem; color:var(--slate-500);">Tình huống: ${escapeHtml(item.sec)}</div>
+          </div>
+
+          <div class="builder-zone">
+            ${builtChips || `<span style="color:var(--slate-400); font-size:0.9rem;">Bấm vào các thẻ từ bên dưới để ghép thành câu...</span>`}
+          </div>
+
+          <div class="word-pool">${poolChips}</div>
+
+          ${!state.answered ? `
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="clearBuiltWords()">↺ Xóa ghép lại</button>
+              <button class="btn btn-primary" onclick="checkBuiltSentence()">Kiểm tra câu</button>
+            </div>
+          ` : ""}
+        `;
+      } else {
+        bodyHtml = `
+          <div class="prompt-box">
+            <div class="prompt-label">Nhìn nghĩa tiếng Việt và gõ lại chính xác câu tiếng Anh</div>
+            <div class="prompt-main">${escapeHtml(item.vi)}</div>
+            <div style="font-size:0.84rem; color:var(--slate-500); margin-bottom:14px;">Tình huống: ${escapeHtml(item.sec)}</div>
+            <input id="writingInput" class="typing-input" type="text" autocomplete="off" spellcheck="false"
+              placeholder="Nhập câu tiếng Anh..." ${state.answered ? "disabled" : ""}
+              onkeydown="if(event.key==='Enter') checkTypedSentence()" />
+            ${!state.answered ? `
+              <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
+                <button class="btn btn-outline" onclick="alert('Gợi ý IPA: ${escapeHtml(item.ipa)}\\nSố từ: ${item.en.split(" ").length} từ\\nChữ cái đầu: ${escapeHtml(item.en.slice(0, 3))}...')">💡 Gợi ý IPA</button>
+                <button class="btn btn-outline" onclick="speakText(${JSON.stringify(item.en)})">🔊 Nghe phát âm</button>
+                <button class="btn btn-primary" onclick="checkTypedSentence()">Kiểm tra</button>
+              </div>
+            ` : ""}
+          </div>
+        `;
+      }
+
+      ws.innerHTML = `
+        <div class="module-header">
+          <div>
+            <div class="module-title">✍️ Kỹ năng Viết (Writing &amp; Sentence Building)</div>
+            <div class="module-subtitle">Rèn luyện cấu trúc câu giao tiếp chính xác từng từ</div>
+          </div>
+          <div class="submode-pills">
+            <button class="submode-pill ${state.writingMode === "build" ? "active" : ""}" onclick="setWritingMode('build')">Ghép từ thành câu</button>
+            <button class="submode-pill ${state.writingMode === "type" ? "active" : ""}" onclick="setWritingMode('type')">Gõ lại câu tiếng Anh</button>
+          </div>
+        </div>
+
+        ${renderQuizMeta(item)}
+        ${bodyHtml}
+        ${state.answered ? renderFeedbackBanner(item, state.lastIsCorrect) : ""}
+      `;
+
+      if (state.writingMode === "type" && !state.answered) {
+        const inp = document.getElementById("writingInput");
+        if (inp) inp.focus();
+      }
+    }
+
+    function setWritingMode(mode) {
+      state.writingMode = mode;
+      prepareQuestionState();
+      renderWorkspace();
+    }
+
+    function pickWord(arrIdx) {
+      if (state.answered) return;
+      if (!state.pickedIndices.includes(arrIdx)) {
+        state.pickedIndices.push(arrIdx);
+        renderWorkspace();
+      }
+    }
+
+    function unpickWord(pos) {
+      if (state.answered) return;
+      state.pickedIndices.splice(pos, 1);
+      renderWorkspace();
+    }
+
+    function clearBuiltWords() {
+      if (state.answered) return;
+      state.pickedIndices = [];
+      renderWorkspace();
+    }
+
+    function checkBuiltSentence() {
+      if (state.answered) return;
+      const item = state.deck[state.index];
+      const userStr = state.pickedIndices.map(i => state.wordTokens[i].text).join(" ");
+      if (!userStr) return;
+
+      const isCorrect = userStr === item.en;
+      state.answered = true;
+      state.lastIsCorrect = isCorrect;
+      if (isCorrect) state.score++;
+
+      recordAnswer(item.id, isCorrect);
+      playSound(isCorrect ? "correct" : "wrong");
+      renderWorkspace();
+    }
+
+    function normalizeSentence(str) {
+      return str.toLowerCase().replace(/[.,!?]/g, "").replace(/\s+/g, " ").trim();
+    }
+
+    function checkTypedSentence() {
+      if (state.answered) return;
+      const inp = document.getElementById("writingInput");
+      const val = (inp ? inp.value : "").trim();
+      if (!val) {
+        inp && inp.focus();
+        return;
+      }
+      const item = state.deck[state.index];
+      const isCorrect = normalizeSentence(val) === normalizeSentence(item.en);
+
+      state.answered = true;
+      state.lastIsCorrect = isCorrect;
+      if (isCorrect) state.score++;
+
+      recordAnswer(item.id, isCorrect);
+      playSound(isCorrect ? "correct" : "wrong");
+      renderWorkspace();
+      const newInp = document.getElementById("writingInput");
+      if (newInp) newInp.value = val;
+    }
+
+    // ---------------- FEEDBACK BANNER DÙNG CHUNG ----------------
+    function renderFeedbackBanner(item, isCorrect) {
+      return `
+        <div class="feedback-box ${isCorrect ? "correct" : "wrong"}">
+          <div class="feedback-text">
+            <h4>${isCorrect ? "✅ Chính xác! Tuyệt vời!" : "❌ Chưa chính xác — Hãy ghi nhớ mẫu câu chuẩn:"}</h4>
+            <p>
+              <strong>${escapeHtml(item.en)}</strong>
+              <span style="color:var(--slate-600); font-size:0.86rem;">(${escapeHtml(item.ipa)})</span><br/>
+              Nghĩa: <strong>${escapeHtml(item.vi)}</strong> • <em>${escapeHtml(item.sec)}</em>
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn btn-outline btn-sm" onclick="speakText(${JSON.stringify(item.en)})">🔊 Nghe</button>
+            <button class="btn btn-primary" onclick="nextQuestion()">Câu tiếp theo →</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------------- MODULE 5: KHO 222 MẪU CÂU (LIBRARY) ----------------
+    function renderLibrary(ws) {
+      const pool = getFilteredPool();
+      const q = state.searchQuery.trim().toLowerCase();
+      const visible = q
+        ? pool.filter(s =>
+            s.en.toLowerCase().includes(q) ||
+            s.vi.toLowerCase().includes(q) ||
+            s.sec.toLowerCase().includes(q)
+          )
+        : pool;
+
+      const unitInfo = state.unitFilter !== "all" ? UNIT_META[state.unitFilter] : null;
+
+      const rowsHtml = visible.map(s => {
+        const p = getItemProgress(s.id);
+        return `
+          <tr class="${p.mastered ? "row-mastered" : ""}">
+            <td style="width:64px; font-weight:700; color:var(--slate-500);">
+              U${s.u}.#${s.num}
+            </td>
+            <td>
+              <div class="unit-tag">${escapeHtml(s.sec)}</div>
+              <div class="en-cell">${escapeHtml(s.en)}</div>
+              ${s.note ? `<div style="font-size:0.76rem; color:var(--amber-600); margin-top:2px;">💡 ${escapeHtml(s.note)}</div>` : ""}
+            </td>
+            <td class="ipa-cell">${escapeHtml(s.ipa)}</td>
+            <td>${escapeHtml(s.vi)}</td>
+            <td style="width:170px;">
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn btn-outline btn-sm" onclick="speakText(${JSON.stringify(s.en)})" title="Nghe phát âm">🔊</button>
+                <button class="btn ${p.mastered ? "btn-success" : "btn-outline"} btn-sm" onclick="toggleLibMaster(${s.id})">
+                  ${p.mastered ? "✓ Đã thuộc" : "Đánh dấu thuộc"}
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      ws.innerHTML = `
+        <div class="module-header">
+          <div>
+            <div class="module-title">📚 Kho 222 Mẫu Câu Chuẩn (Toàn bộ Part 1)</div>
+            <div class="module-subtitle">Tra cứu nhanh, nghe phát âm bản xứ và quản lý trạng thái ghi nhớ từng câu</div>
+          </div>
+        </div>
+
+        ${unitInfo ? `
+          <div class="note-banner" style="background:var(--indigo-50); border-color:#c7d2fe;">
+            <strong>${escapeHtml(unitInfo.title)}</strong> — Mục tiêu giao tiếp: ${escapeHtml(unitInfo.goal)}
+          </div>
+        ` : ""}
+
+        <div class="library-tools">
+          <input class="search-input" type="text" placeholder="🔍 Tìm kiếm theo tiếng Anh, tiếng Việt hoặc tên tình huống..."
+            value="${escapeHtml(state.searchQuery)}" oninput="onLibrarySearch(this.value)" />
+          <span class="badge badge-navy">Hiển thị: ${visible.length} / ${SENTENCES.length} câu</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã</th>
+                <th>Mẫu câu &amp; Tình huống</th>
+                <th>IPA (US)</th>
+                <th>Nghĩa tiếng Việt</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml || `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--slate-500);">Không tìm thấy mẫu câu phù hợp.</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function onLibrarySearch(val) {
+      state.searchQuery = val;
+      const cursorPos = document.activeElement?.selectionStart || val.length;
+      renderWorkspace();
+      const inp = document.querySelector(".search-input");
+      if (inp) {
+        inp.focus();
+        inp.setSelectionRange(cursorPos, cursorPos);
+      }
+    }
+
+    function toggleLibMaster(id) {
+      toggleMastered(id);
+      renderWorkspace();
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // =========================================================================
+    // 6. KHỞI TẠO ỨNG DỤNG
+    // =========================================================================
+    (function init() {
+      console.assert(SENTENCES.length === 222, "Tổng số câu phải bằng chính xác 222!");
+      updateSoundBtn();
+      updateTopStats();
+      populateSectionDropdown();
+      rebuildDeck();
+      renderWorkspace();
+    })();
+  </script>
+</body>
+</html>
